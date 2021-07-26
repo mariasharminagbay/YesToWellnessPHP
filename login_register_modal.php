@@ -53,9 +53,9 @@
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password">
                                     <input id="password_confirmation" class="form-control" type="password" placeholder="Confirm Password" name="password_confirmation">
                                     <div>
-                                    <input id="agree" class="form-control" type="checkbox"  name="agree">
+                                    <!-- <input id="agree" class="form-control" type="checkbox"  name="agree">
                                         <label for="agree"> Do you agree with the terms and conditions? </label>
-                                    </input>
+                                    </input> -->
                                     </div>
                                     </br>
                                     <input class="btn btn-default btn-register" type="button" value="Create account" name="commit">

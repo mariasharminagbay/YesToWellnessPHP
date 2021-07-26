@@ -51,7 +51,7 @@
                       <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="login_register_modal.php">Login</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
                       </li>
                     </ul>
                   </div>

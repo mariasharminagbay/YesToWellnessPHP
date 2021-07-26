@@ -1,74 +1,42 @@
 <?php
 
 include("connect.php");
+include("functions.php");
+
 
 $error="";
 
-if(isset($_POST['submit']))
+if (isset($_POST['submit']))
 {
-$firstName=$_POST['firstname'];
-$lastName=$_POST['lastname'];
-$email=$_POST['email'];
-$password=$_POST['password'];
-$passwordConfirm=$_POST['passwordConfirm'];
-
-$query_emails=mysqli_query($con,"SELECT * FROM tblcustomers WHERE emailAddress='$email'");
-
-$numEmail=mysqli_num_rows($query_emails);
-
-    if (strlen($firstName) < 3)
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  //$password =md5($password);
+  
+  if (email_exists($email,$con))
+  {
+    //echo("email exists");
+    $result = mysqli_query($con, "select password from tblcustomers where emailAddress ='$email'");
+    $retrievepassword = mysqli_fetch_assoc($result);
+    $user_pass = $retrievepassword['password'];
+    //echo('Password from DB is '.$user_pass);
+	
+    if(password_verify($password,$user_pass))   //$retrievepassword['password']))
     {
-        //$error= "First name is too short. You must enter more than three characters";
-        echo '<script>alert("First name is too short. You must enter more than three characters")</script>';
-    }
-    else if (strlen($lastName) < 3)
-    {
-        //$error="Last name is too short. You must enter more than three characters";
-        echo '<script>alert("Last name is too short. You must enter more than three characters")</script>';
-    }
-    else if(!filter_var($email,FILTER_VALIDATE_EMAIL))
-    {
-        //$error="Please enter valid email address";
-        echo '<script>alert("User is already exists")</script>';
-    }
+      $_SESSION['email']=$email;
+      header("location: index.php");
+    }else 
+      {
+        echo '<script>alert("Sorry, Your password is incorrect")</script>';
 
-    else if ($numEmail > 0)
-    {
-        //$error="User is already exists";
-        echo '<script>alert("User is already exists")</script>';
+      }	
+	}else
+	  {
+        $error="Your email does not exists";
     }
-    else if (strlen($password)<5)
-    {
-        //$error="Password must be greater than five characters";
-        echo '<script>alert("Password must be greater than five characters")</script>';
-    }
-    else if ($password !== $passwordConfirm)
-    {
-        //$error="Password does not match!";
-        echo '<script>alert("Password does not match!")</script>';
-    }
+  }
+  
 
-    else{
-        $password=password_hash($password,PASSWORD_DEFAULT);
-    //	$image=$email.$image;
-        $insertQuery = "INSERT INTO tblcustomers (firstName,lastName,emailAddress,password)
-            VALUES ('$firstName','$lastName','$email','$password')";
-
-        if(mysqli_query($con,$insertQuery))
-        {
-            //"You are sucessfully registered";
-            echo '<script>alert("You have sucessfully registered")</script>';
-            $_SESSION['email']=$email;
-            header("location: login.php");
-        }	
-        else
-        {
-            echo '<script>alert("Sorry...Try again!")</script>';
-        }
-    }
-
-}
-?>
+ ?>
 
 
 
@@ -109,10 +77,13 @@ $numEmail=mysqli_num_rows($query_emails);
                              <div class="content">
                                 <div class="error"></div>
                                 <div class="form loginBox">
-                                    <form method="" action="" accept-charset="UTF-8">
+                                    <!-- <form method="POST" action="login.php" accept-charset="UTF-8"> -->
+                                    <form method="POST" html="{:multipart=>true}" data-remote="true" action="login.php" accept-charset="UTF-8">
                                     <input id="email" class="form-control" type="text" placeholder="Email" name="email">
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password">
-                                    <input class="btn btn-default btn-login" type="button" value="Login" onclick="loginAjax()">
+                                    <!-- <input class="btn btn-default btn-login" type="button" value="Login" onclick="loginAjax()"> -->
+                                    <input class="btn btn-default btn-login" type="submit" value="Login" name="submit">
+                                    
                                     </form>
                                 </div>
                              </div>
@@ -127,12 +98,10 @@ $numEmail=mysqli_num_rows($query_emails);
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password">
                                     <input id="passwordConfirm" class="form-control" type="password" placeholder="Confirm Password" name="passwordConfirm">
                                     <div>
-                                    <!-- <input id="agree" class="form-control" type="checkbox"  name="agree">
-                                        <label for="agree"> Do you agree with the terms and conditions? </label>
-                                    </input> -->
+                                    
                                     </div>
                                     </br>
-                                    <!-- <input class="btn btn-default btn-register" type="button" value="Create account" name="commit"> -->
+                                    
                                     <input class="btn btn-default btn-register" type="submit" value="Create account" name="submit">
                                 </form>
                                 </div>
@@ -143,14 +112,13 @@ $numEmail=mysqli_num_rows($query_emails);
                     <div class="modal-footer">
                         <div class="forgot login-footer">
                             <span>Looking to
-                                 <a href="javascript: showRegisterForm();">create an account</a> 
+                                  <a href="javascript: showRegisterForm();">create an account</a>
                                  <!-- <a href="login_register_modal.php"> create and account</a> -->
                             ?</span>
                         </div>
                         <div class="forgot register-footer" style="display:none">
                              <span>Already have an account?</span>
-                             <!-- <a href="javascript: showLoginForm();">Login</a> -->
-                             <a href="login.php"> Login</a>
+                             <a href="javascript: showLoginForm();">Login</a>
                         </div>
                     </div>
     		      </div>

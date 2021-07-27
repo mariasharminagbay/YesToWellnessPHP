@@ -53,6 +53,9 @@
                       
                       <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
                       </li>
+                    
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="appointments_practitioners.php">Appointmets</a>
+                      </li>
                     </ul>
                   </div>
                 </div>

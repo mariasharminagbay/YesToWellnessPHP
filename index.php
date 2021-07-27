@@ -1,3 +1,11 @@
+
+<?php 
+
+if (session_id() == "") 
+    session_start(); 
+
+?>
+
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
@@ -42,7 +50,7 @@
                 <div class="rd-navbar-main-element">
                   <div class="rd-navbar-nav-wrap">
                     <ul class="rd-navbar-nav">
-                      <li class="rd-nav-item active"><a class="rd-nav-link" href="index.html">Home</a>
+                      <li class="rd-nav-item active"><a class="rd-nav-link" href="index.php">Home</a>
                       </li>
                       
                       <li class="rd-nav-item"><a class="rd-nav-link" href="about.html">About</a>
@@ -51,8 +59,17 @@
                       <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
-                      </li>
+                      <?php 
+
+                        if (session_id() == "") { ?>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
+                          </li>
+                      <?php } ?> 
+                      <?php if (session_id() != "") { ?>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="logout.php">Logout</a>
+                          </li>
+                      <?php } ?> 
+                      <li class="rd-nav-item"><a class="rd-nav-link">Hello   <strong style="color:green;font-size:30px;"> <?php echo $_SESSION['user_name']; ?> </strong> </a>
                     </ul>
                   </div>
                 </div>

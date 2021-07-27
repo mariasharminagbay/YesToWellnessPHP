@@ -1,9 +1,11 @@
 <?php
 
+session_start();
+
 include("connect.php");
 include("functions.php");
 
-
+//session_start();
 $error="";
 
 if (isset($_POST['submit']))
@@ -15,14 +17,17 @@ if (isset($_POST['submit']))
   if (email_exists($email,$con))
   {
     //echo("email exists");
-    $result = mysqli_query($con, "select password from tblcustomers where emailAddress ='$email'");
+    $result = mysqli_query($con, "select password, firstname from tblcustomers where emailAddress ='$email'");
     $retrievepassword = mysqli_fetch_assoc($result);
     $user_pass = $retrievepassword['password'];
+    $user_name = $retrievepassword['firstname'];
     //echo('Password from DB is '.$user_pass);
 	
     if(password_verify($password,$user_pass))   //$retrievepassword['password']))
     {
-      $_SESSION['email']=$email;
+      $_SESSION['email'] = $email;
+      $_SESSION['user_name'] = $user_name;
+      echo $_SESSION['email'];
       header("location: index.php");
     }else 
       {

@@ -79,7 +79,7 @@ if (isset($_POST['submit']))
                     </div>
                     <div class="modal-body">
                         <div class="box">
-                             <div class="content">
+                            <div class="content">
                                 <div class="error"></div>
                                 <div class="form loginBox">
                                     <!-- <form method="POST" action="login.php" accept-charset="UTF-8"> -->
@@ -102,14 +102,15 @@ if (isset($_POST['submit']))
                                     <input id="email" class="form-control" type="text" placeholder="Email" name="email">
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password">
                                     <input id="passwordConfirm" class="form-control" type="password" placeholder="Confirm Password" name="passwordConfirm">
-                                    <div>
-                                    
+                                    <div> 
+                                        <input id="agree" type="checkbox" name="agree" value="1" >
+                                        <label for="agree"> I Agree to the Terms and Conditions</label><br> 
+                                         
                                     </div>
                                     </br>
-                                    
                                     <input class="btn btn-default btn-register" type="submit" value="Create account" name="submit">
                                 </form>
-                                </div>
+                             </div>
                             </div>
                         </div>
                     </div>

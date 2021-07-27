@@ -281,6 +281,13 @@ if (session_id() == "")
                   <li><a href="#" data-waypoint-to="#">Help Center</a></li>
                   <li><a href="#" data-waypoint-to="#">FAQs</a></li>
                   <li><a href="#" data-waypoint-to="#">Pricing</a></li>
+                  
+                </ul>
+              </div>
+              <div class="col-sm-4 col-md-4 col-lg-3">
+                <p>    </p>
+                <ul class="list">
+                  <li><a href="#" data-waypoint-to="#"></a></li>
                   <li><a href="#" data-waypoint-to="#">Terms</a></li>
                   <li><a href="#" data-waypoint-to="#">Privacy Policy</a></li>
                   <li><a href="#" data-waypoint-to="#">Contact Us</a></li>
@@ -295,7 +302,7 @@ if (session_id() == "")
           <div class="row row-sm-30">
             <div class="col-lg-6">
               <div class="group-md group-middle">
-                <p class="rights"><span>&copy;&nbsp; </span><span class="copyright-year"></span><span>&nbsp;</span><span>Beautyrel</span><span>.&nbsp;</span><a href="privacy-policy.html">Privacy Policy</a></p>
+                <p class="rights"><span>&copy;&nbsp; </span><span class="copyright-year"></span><span>&nbsp;</span><span>YesToWellness</span><span>.&nbsp;</span><a href="privacy-policy.html">Privacy Policy</a></p>
               </div>
             </div>
             <div class="col-lg-6">

@@ -6,6 +6,10 @@ $error="";
 
 if(isset($_POST['submit']))
 {
+
+    $agree=$_POST['agree'];
+    //validate first if the customer agrees to the terms and condiditon - if not then it will not allow to register
+    
 $firstName=$_POST['firstname'];
 $lastName=$_POST['lastname'];
 $email=$_POST['email'];
@@ -20,33 +24,44 @@ $numEmail=mysqli_num_rows($query_emails);
     {
         //$error= "First name is too short. You must enter more than three characters";
         echo '<script>alert("First name is too short. You must enter more than three characters")</script>';
+        //header("location: login_register_modal.php");
     }
     else if (strlen($lastName) < 3)
     {
         //$error="Last name is too short. You must enter more than three characters";
         echo '<script>alert("Last name is too short. You must enter more than three characters")</script>';
+        //header("location: login_register_modal.php");
     }
     else if(!filter_var($email,FILTER_VALIDATE_EMAIL))
     {
         //$error="Please enter valid email address";
         echo '<script>alert("User is already exists")</script>';
+        //header("location: login_register_modal.php");
     }
 
     else if ($numEmail > 0)
     {
         //$error="User is already exists";
         echo '<script>alert("User is already exists")</script>';
+        //header("location: login_register_modal.php");
     }
     else if (strlen($password)<5)
     {
         //$error="Password must be greater than five characters";
         echo '<script>alert("Password must be greater than five characters")</script>';
+        //header("location: login_register_modal.php");
     }
     else if ($password !== $passwordConfirm)
     {
         //$error="Password does not match!";
         echo '<script>alert("Password does not match!")</script>';
+        //header("location: login_register_modal.php");
     }
+
+    else if ($agree !=1) {
+        echo '<script>alert("Sorry...You need to agree to terms and conditions to register.")</script>';
+        //header("location: login_register_modal.php");
+    } 
 
     else{
         $password=password_hash($password,PASSWORD_DEFAULT);
@@ -64,6 +79,7 @@ $numEmail=mysqli_num_rows($query_emails);
         else
         {
             echo '<script>alert("Sorry...Try again!")</script>';
+            //header("location: login_register_modal.php");
         }
     }
 
@@ -126,10 +142,10 @@ $numEmail=mysqli_num_rows($query_emails);
                                     <input id="email" class="form-control" type="text" placeholder="Email" name="email">
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password">
                                     <input id="passwordConfirm" class="form-control" type="password" placeholder="Confirm Password" name="passwordConfirm">
-                                    <div>
-                                    <!-- <input id="agree" class="form-control" type="checkbox"  name="agree">
-                                        <label for="agree"> Do you agree with the terms and conditions? </label>
-                                    </input> -->
+                                    <div> 
+                                        <input id="agree" type="checkbox" name="agree" value="1" >
+                                        <label for="agree"> I Agree to the Terms and Conditions</label><br> 
+                                         
                                     </div>
                                     </br>
                                     <!-- <input class="btn btn-default btn-register" type="button" value="Create account" name="commit"> -->

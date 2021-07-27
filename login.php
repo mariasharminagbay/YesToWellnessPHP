@@ -1,9 +1,11 @@
 <?php
 
+session_start();
+
 include("connect.php");
 include("functions.php");
 
-
+//session_start();
 $error="";
 
 if (isset($_POST['submit']))
@@ -15,14 +17,17 @@ if (isset($_POST['submit']))
   if (email_exists($email,$con))
   {
     //echo("email exists");
-    $result = mysqli_query($con, "select password from tblcustomers where emailAddress ='$email'");
+    $result = mysqli_query($con, "select password, firstname from tblcustomers where emailAddress ='$email'");
     $retrievepassword = mysqli_fetch_assoc($result);
     $user_pass = $retrievepassword['password'];
+    $user_name = $retrievepassword['firstname'];
     //echo('Password from DB is '.$user_pass);
 	
     if(password_verify($password,$user_pass))   //$retrievepassword['password']))
     {
-      $_SESSION['email']=$email;
+      $_SESSION['email'] = $email;
+      $_SESSION['user_name'] = $user_name;
+      echo $_SESSION['email'];
       header("location: index.php");
     }else 
       {
@@ -74,7 +79,7 @@ if (isset($_POST['submit']))
                     </div>
                     <div class="modal-body">
                         <div class="box">
-                             <div class="content">
+                            <div class="content">
                                 <div class="error"></div>
                                 <div class="form loginBox">
                                     <!-- <form method="POST" action="login.php" accept-charset="UTF-8"> -->
@@ -97,14 +102,15 @@ if (isset($_POST['submit']))
                                     <input id="email" class="form-control" type="text" placeholder="Email" name="email">
                                     <input id="password" class="form-control" type="password" placeholder="Password" name="password">
                                     <input id="passwordConfirm" class="form-control" type="password" placeholder="Confirm Password" name="passwordConfirm">
-                                    <div>
-                                    
+                                    <div> 
+                                        <input id="agree" type="checkbox" name="agree" value="1" >
+                                        <label for="agree"> I Agree to the Terms and Conditions</label><br> 
+                                         
                                     </div>
                                     </br>
-                                    
                                     <input class="btn btn-default btn-register" type="submit" value="Create account" name="submit">
                                 </form>
-                                </div>
+                             </div>
                             </div>
                         </div>
                     </div>

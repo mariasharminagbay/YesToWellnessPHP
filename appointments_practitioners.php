@@ -1,3 +1,10 @@
+<?php
+include("connect.php");
+include("functions.php");
+
+
+?>
+
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>

@@ -1,16 +1,106 @@
+<?php
 
-<?php 
+include("connect.php");
+session_start();
 
-if (session_id() == "") 
-    session_start(); 
-    echo "Email Address is: " .$_SESSION['email'];
-    echo "UserName is: " .$_SESSION['user_name'];
-    echo "CustomerID is: " .$_SESSION['customerID'];
+$error="";
 
-    //$email = $_SESSION['email'];
-    //$firstName = $_SESSION['user_name'];
+if(isset($_POST['submit']))
+{
 
+    $agree=$_POST['agree'];
+    //validate first if the customer agrees to the terms and condiditon - if not then it will not allow to register
+    
+$firstName=$_POST['firstname'];
+$lastName=$_POST['lastname'];
+$email=$_POST['email'];
+$password=$_POST['password'];
+$passwordConfirm=$_POST['passwordConfirm'];
+
+$query_emails=mysqli_query($con,"SELECT * FROM tblcustomers WHERE emailAddress='$email'");
+
+$numEmail=mysqli_num_rows($query_emails);
+
+    if (strlen($firstName) < 3)
+    {
+        //$error= "First name is too short. You must enter more than three characters";
+        echo '<script>alert("First name is too short. You must enter more than three characters")</script>';
+        //header("location: login_register_modal.php");
+    }
+    else if (strlen($lastName) < 3)
+    {
+        //$error="Last name is too short. You must enter more than three characters";
+        echo '<script>alert("Last name is too short. You must enter more than three characters")</script>';
+        //header("location: login_register_modal.php");
+    }
+    else if(!filter_var($email,FILTER_VALIDATE_EMAIL))
+    {
+        //$error="Please enter valid email address";
+        echo '<script>alert("User is already exists")</script>';
+        //header("location: login_register_modal.php");
+    }
+
+    else if ($numEmail > 0)
+    {
+        //$error="User is already exists";
+        echo '<script>alert("User is already exists")</script>';
+        //header("location: login_register_modal.php");
+    }
+    else if (strlen($password)<5)
+    {
+        //$error="Password must be greater than five characters";
+        echo '<script>alert("Password must be greater than five characters")</script>';
+        //header("location: login_register_modal.php");
+    }
+    else if ($password !== $passwordConfirm)
+    {
+        //$error="Password does not match!";
+        echo '<script>alert("Password does not match!")</script>';
+        //header("location: login_register_modal.php");
+    }
+
+    else if ($agree !=1) {
+        echo '<script>alert("Sorry...You need to agree to terms and conditions to register.")</script>';
+        //header("location: login_register_modal.php");
+    } 
+
+    else{
+        $password=password_hash($password,PASSWORD_DEFAULT);
+    //	$image=$email.$image;
+        $insertQuery = "INSERT INTO tblcustomers (firstName,lastName,emailAddress,password)
+            VALUES ('$firstName','$lastName','$email','$password')";
+
+        if(mysqli_query($con,$insertQuery))
+        {
+            //"You are sucessfully registered";
+            //then get the customerID that was recently saved
+            $result = mysqli_query($con, "select customerID, firstname from tblcustomers where emailAddress ='$email'");
+            $retrievepassword = mysqli_fetch_assoc($result);
+            
+            $user_name = $retrievepassword['firstname'];
+            $customerID = $retrievepassword['customerID'];
+
+            $_SESSION['email']=$email;
+            $_SESSION['user_name'] = $user_name;
+            $_SESSION['customerID']=$customerID;
+
+            
+            echo '<script>alert("You have sucessfully registered " & $customerID)</script>';
+            
+            header("location: IsPatient.php");
+        }	
+        else
+        {
+            echo '<script>alert("Sorry...Try again!")</script>';
+            //header("location: login_register_modal.php");
+        }
+    }
+
+}
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
@@ -59,13 +149,16 @@ if (session_id() == "")
                       <li class="rd-nav-item active"><a class="rd-nav-link" href="index.php">Home</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.html">About</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.php">About</a>
+                      </li>
+
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="faq.php">FAQ</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
                       </li>
                       
-                     
+               
                     </ul>
                   </div>
                 </div>
@@ -83,18 +176,27 @@ if (session_id() == "")
         <div class="main-bunner-inner">
           <div class="container wide">
             <div class="row justify-content-left">
-                <form method="POST" action="IsPatient.php" enctype="multipart/form-data">
-                <h1 data-caption-animate="fadeInUp" data-caption-delay="100">Are <br class="br-none"> you a...</h1>
-                    <div class="btn-wrap">
-                        
-                        <div class="group-xxl group-middle" >
-                            <a class="button button-primary button-md button-round-2" href="practitionerProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450" style="height:75px; width:300px" > Counselor ? </a>
+                <form method="POST" action="register.php" enctype="multipart/form-data">
+                <h4 data-caption-animate="fadeInUp" data-caption-delay="100">To get started, please enter:</h4>
+                      </br>
+                      <input id="firstname" class="form-control" type="text" placeholder="First Name" name="firstname">
+                        <input id="lastname" class="form-control" type="text" placeholder="Last Name" name="lastname">
+                        <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                        <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                        <input id="passwordConfirm" class="form-control" type="password" placeholder="Confirm Password" name="passwordConfirm">
+                        <div> 
+                            <input id="agree" type="checkbox" name="agree" value="1" >
+                            <label for="agree"> I Agree to the Terms and Conditions</label><br>
+                              
                         </div>
-                        <div class="group-xxl group-middle" >
-                            <a class="button button-primary button-md button-round-2" href="patientProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450" style="height:75px; width:300px"> Patient ? </a>
-                        </div>
-                    </div>
-
+                    
+                    
+                <p>
+                    <input type="submit" name="submit" value="Create an account" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >
+                  
+                </p> <br>
+                <span>Already have an account?</span>
+                <a href="login1.php"><b>Login</b></a>  
                 </form>
             </div>
           </div>

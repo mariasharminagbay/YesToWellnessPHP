@@ -74,7 +74,7 @@ $numEmail=mysqli_num_rows($query_emails);
             //"You are sucessfully registered";
             echo '<script>alert("You have sucessfully registered")</script>';
             $_SESSION['email']=$email;
-            header("location: login.php");
+            header("location: IsPatient.php");
         }	
         else
         {

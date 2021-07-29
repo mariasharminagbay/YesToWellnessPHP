@@ -1,14 +1,55 @@
 
 <?php 
+include("connect.php");
 
 if (session_id() == "") 
     session_start(); 
-    echo "Email Address is: " .$_SESSION['email'];
-    echo "UserName is: " .$_SESSION['user_name'];
-    echo "CustomerID is: " .$_SESSION['customerID'];
 
-    //$email = $_SESSION['email'];
-    //$firstName = $_SESSION['user_name'];
+$_SESSION['customerType'] = 2;
+echo "Email Address is: " .$_SESSION['email'];
+
+
+echo "Customer type is: " .$_SESSION['customerType'];
+
+echo "UserName is: " .$_SESSION['user_name'];
+echo "CustomerID is: " .$_SESSION['customerID'];
+
+$email = $_SESSION['email'];
+$customerID = $_SESSION['customerID'];
+
+
+if (isset($_POST['submit'])){
+    //will now save or update practitioner's page
+    if(!empty($_POST['licensetype'])) {
+      
+        $licensetypeList = implode(', ', $_POST['licensetype']);
+
+        //echo $licensetypeList;
+        //need to insert @DB for tblpractitionerProfile
+        $insertQuery = "INSERT INTO tblpractitionerprofile (`customerID`, `officeLocation`, `city`, `province`, `zip`, `licenseType`, `licenseNumber`, `licenseCopy`, `levelOfEducation`, `nameOfInstitution`, `profilePhoto`, `affiliations`, `specialties`, `aboutMe`) VALUES ('$customerID', '','', '', '', '$licensetypeList', '', '', '', '', '', '', '', '')";
+   
+            if (mysqli_query($con,$insertQuery))
+            {
+                //once done inserting to tblpractitionerprofile - then update the table of customer and tagged the customer as practitioner ID =2
+                $updateQuery = "UPDATE tblcustomers SET customerTypeId = 2 where emailAddress='$email'";
+                
+                if (mysqli_query($con,$updateQuery)){
+                    header("location: practitionerProfile2.php");
+                }else{
+                    echo '<script>alert("Error occured while updating CustomerTypeId of customer.")</script>';
+                }
+                
+                //echo '<script>alert("Item has been added")</script>';
+            }
+            else {
+                echo '<script>alert("Error occured while building Practitioner profile.")</script>';
+            }
+
+    } else{
+        //will ask the user to check one of the check boxes
+        echo '<script>alert("Kindly choose license type.")</script>';
+    }
+}
 
 ?>
 
@@ -59,13 +100,15 @@ if (session_id() == "")
                       <li class="rd-nav-item active"><a class="rd-nav-link" href="index.php">Home</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.html">About</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.php">About</a>
+                      </li>
+
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="faq.php">FAQ</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
                       </li>
-                      
-                     
+                     <!-- deleted the Hello  Username snipet--> 
                     </ul>
                   </div>
                 </div>
@@ -83,17 +126,31 @@ if (session_id() == "")
         <div class="main-bunner-inner">
           <div class="container wide">
             <div class="row justify-content-left">
-                <form method="POST" action="IsPatient.php" enctype="multipart/form-data">
-                <h1 data-caption-animate="fadeInUp" data-caption-delay="100">Are <br class="br-none"> you a...</h1>
-                    <div class="btn-wrap">
+                <form method="POST" action="practitionerProfile.php" enctype="multipart/form-data">
+                <h4 data-caption-animate="fadeInUp" data-caption-delay="100">To get started, please select your license type(s)</h4>
+                      </br>
+                <input type="checkbox" value="LCSW" name="licensetype[]">  LCSW - License Clinical Social Worker<br/>
+                <input type="checkbox" value="LMSW" name="licensetype[]">  LMSW - License Master Social Worker<br/>
+                <input type="checkbox" value="MHC" name="licensetype[]">  MHC - Mental Health Counselor<br/>
+                <input type="checkbox" value="LMFT" name="licensetype[]">  LMFT - Licensed Marriage and Family Therapist<br/>
+                <input type="checkbox" value="LPC" name="licensetype[]">  LPC - Licensed Professional Counselor<br/>
+                    </br>
+                    <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Requirements</h4>
+                    <ul>
+                        <li> * Licensed by the State Board to provide counseling(e.g., LCSW,LMSW,MHC,LMFT,LPC) </li>
+                        <li> * Experience in counseling for adults, couples, and/or teend </li>
+                        <li> * Excellent writing skills </li>
+                        <li> * Reliable internet connection </li>
+                        <li> * Currently residing in Canada </li>
                         
-                        <div class="group-xxl group-middle" >
-                            <a class="button button-primary button-md button-round-2" href="practitionerProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450" style="height:75px; width:300px" > Counselor ? </a>
-                        </div>
-                        <div class="group-xxl group-middle" >
-                            <a class="button button-primary button-md button-round-2" href="patientProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450" style="height:75px; width:300px"> Patient ? </a>
-                        </div>
-                    </div>
+                    </ul>
+                      </br>
+                    <h4 data-caption-animate="fadeInUp" data-caption-delay="100" style="font-size: 20px; font-style: italic; ">Note: Counselors are not YesToWellnessa employees but independent service providers.</h4>
+
+                <p>
+                    <input type="submit" name="submit" value="Get Started" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >
+                  
+                </p>
 
                 </form>
             </div>

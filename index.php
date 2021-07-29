@@ -4,6 +4,46 @@
 if (session_id() == "") 
     session_start(); 
 
+    include("connect.php");
+
+    //include 'functions.php';
+    //
+    
+    $error="";
+    $email = $_SESSION['email'];
+    //echo '<script>alert('.$email.')</script>';
+    if (isset($_POST['submit'])){
+      $result = mysqli_query($con, "select customerId, isNew, customerTypeId from tblcustomers where emailAddress ='$email'");
+      $retrievecustomerinfo = mysqli_fetch_assoc($result);
+      $userid = $retrievecustomerinfo['customerId'];
+      $userisnew = $retrievecustomerinfo['isNew'];
+      $customertypeid = $retrievecustomerinfo['customerTypeId'];
+      //echo '<script>alert($customertypeid)</script>';
+
+      $_SESSION['email']=$email;
+      $_SESSION['customerId']=$userid;
+      $_SESSION['customerType']=$customertypeid;
+
+      if($userisnew == 0) {
+        //this will load the form if customer is counselor or patient    
+        header("location: IsPatient.php");
+      }
+      else{
+        //old customer >>> then will check if either practitioner or patient
+        if($customertypeid == 1) {
+          //header("location: IsPatient.php");
+          echo '<script>alert("Should go to Patients page")</script>';
+
+        } else {
+          //header("location: IsPatient.php");
+          echo '<script>alert("Should go to Practioners page")</script>';
+        }
+
+
+      }
+    
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -53,10 +93,13 @@ if (session_id() == "")
                       <li class="rd-nav-item active"><a class="rd-nav-link" href="index.php">Home</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.html">About</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.php">About</a>
+                      </li>
+
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="faq.php">FAQ</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
                       </li>
                       
                       <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
@@ -79,8 +122,11 @@ if (session_id() == "")
                   </div>
                 </div>
                 <div class="rd-nav-item">
-                  <div class="btn-wrap"><a class="button button-secondary button-sm" href="#">Get Started</a></div>
-                </div>
+                  <!-- <div class="btn-wrap"><a class="button button-secondary button-sm" href="#">Get Started</a></div> -->
+                  <form method="POST" action="index.php" accept-charset="UTF-8">
+                    <div class="btn-wrap"><input type="submit"  name="submit" value="Get Started" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" > </div>
+                  </form>
+                  </div>
               </div>
             </div>
           </nav>
@@ -274,12 +320,11 @@ if (session_id() == "")
                 <ul class="list">
                   <li><a href="#" data-waypoint-to="#">About Us</a></li>
                   <li><a href="#" data-waypoint-to="#">Reviews</a></li>
-                  <li><a href="#" data-waypoint-to="#">Blog</a></li>
                   <li><a href="#" data-waypoint-to="#">Affiliates</a></li>
-                  <li><a href="#" data-waypoint-to="#">Careers</a></li>
-                  <li><a href="#" data-waypoint-to="#">Invest</a></li>
+                  
                 </ul>
               </div>
+              
               <div class="col-sm-4 col-md-4 col-lg-3">
                 <p>Help</p>
                 <ul class="list">
@@ -292,6 +337,7 @@ if (session_id() == "")
               <div class="col-sm-4 col-md-4 col-lg-3">
                 <p>    </p>
                 <ul class="list">
+                  </br>
                   <li><a href="#" data-waypoint-to="#"></a></li>
                   <li><a href="#" data-waypoint-to="#">Terms</a></li>
                   <li><a href="#" data-waypoint-to="#">Privacy Policy</a></li>

@@ -1,16 +1,50 @@
+<?php
 
-<?php 
+session_start();
 
-if (session_id() == "") 
-    session_start(); 
-    echo "Email Address is: " .$_SESSION['email'];
-    echo "UserName is: " .$_SESSION['user_name'];
-    echo "CustomerID is: " .$_SESSION['customerID'];
+include("connect.php");
+include("functions.php");
 
-    //$email = $_SESSION['email'];
-    //$firstName = $_SESSION['user_name'];
+//session_start();
+$error="";
 
-?>
+if (isset($_POST['submit']))
+{
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  //$password =md5($password);
+  
+  if (email_exists($email,$con))
+  {
+    //echo("email exists");
+    $result = mysqli_query($con, "select password, firstname from tblcustomers where emailAddress ='$email'");
+    $retrievepassword = mysqli_fetch_assoc($result);
+    $user_pass = $retrievepassword['password'];
+    $user_name = $retrievepassword['firstname'];
+    //echo('Password from DB is '.$user_pass);
+	
+    if(password_verify($password,$user_pass))   //$retrievepassword['password']))
+    {
+      $_SESSION['email'] = $email;
+      $_SESSION['user_name'] = $user_name;
+      echo $_SESSION['email'];
+      header("location: index.php");
+    }else 
+      {
+        echo '<script>alert("Sorry, Your password is incorrect")</script>';
+
+      }	
+	}else
+	  {
+        $error="Your email does not exists";
+    }
+  }
+  
+
+ ?>
+
+
+
 
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
@@ -59,13 +93,16 @@ if (session_id() == "")
                       <li class="rd-nav-item active"><a class="rd-nav-link" href="index.php">Home</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.html">About</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.php">About</a>
+                      </li>
+
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="faq.php">FAQ</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
                       </li>
                       
-                     
+               
                     </ul>
                   </div>
                 </div>
@@ -83,17 +120,24 @@ if (session_id() == "")
         <div class="main-bunner-inner">
           <div class="container wide">
             <div class="row justify-content-left">
-                <form method="POST" action="IsPatient.php" enctype="multipart/form-data">
-                <h1 data-caption-animate="fadeInUp" data-caption-delay="100">Are <br class="br-none"> you a...</h1>
-                    <div class="btn-wrap">
-                        
-                        <div class="group-xxl group-middle" >
-                            <a class="button button-primary button-md button-round-2" href="practitionerProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450" style="height:75px; width:300px" > Counselor ? </a>
-                        </div>
-                        <div class="group-xxl group-middle" >
-                            <a class="button button-primary button-md button-round-2" href="patientProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450" style="height:75px; width:300px"> Patient ? </a>
-                        </div>
+                <form method="POST" action="login1.php" enctype="multipart/form-data">
+                <h4 data-caption-animate="fadeInUp" data-caption-delay="100">To get started, please enter:</h4>
+                      </br>
+                    <input id="email" class="form-control" type="text" placeholder="Email" name="email">
+                    <br>
+                    <input id="password" class="form-control" type="password" placeholder="Password" name="password">
+                    <div>
+                    <div class="forgot login-footer">
+                            <span>Looking to
+                                  <a href="register.php"><b>create an account</b></a>
+                                 <!-- <a href="login_register_modal.php"> create and account</a> -->
+                            ?</span>
                     </div>
+                    </div>
+                <p>
+                    <input type="submit" name="submit" value="LOGIN" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >
+                  
+                </p>
 
                 </form>
             </div>

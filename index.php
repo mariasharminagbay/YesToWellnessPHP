@@ -102,11 +102,6 @@ if (session_id() == "")
                       <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
                       </li>
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
-                      </li>
-                    
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="appointments_practitioners.php">Appointmets</a>
-                      </li>
                       <?php 
 
                         if (session_id() == "") { ?>
@@ -284,17 +279,7 @@ if (session_id() == "")
           </div>
         </div>
       </div>
-      <div class="section section-custom">
-        <div class="container wide">
-          <div class="text-center">
-            <h2 class="title">Are You a Qualified <br class="br-none"> Therapist?</h2>
-            <div class="subtitle-2 big">Join our team to push your career forward today!</div>
-            <div class="row justify-content-center"><a class="button button-secondary button-md" href="#">Join Us</a></div>
-            <div class="img-wrap"><img src="images/home-4-830x446.jpg" alt="" width="830" height="446"/>
-            </div>
-          </div>
-        </div>
-      </div>
+      
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

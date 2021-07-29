@@ -1,56 +1,60 @@
 
 
-
 <?php 
 include("connect.php");
 
 if (session_id() == "") 
     session_start(); 
 
-//echo "Email Address is: " .$_SESSION['email'];
-//echo "Customer ID is: " .$_SESSION['customerId'];
-//echo "Customer type is: " .$_SESSION['customerType'];
+    $_SESSION['customerType'] = 1;
 
-$email = $_SESSION['email'];
-$customerID = $_SESSION['customerID'];
-$customerType = $_SESSION['customerType'];
+    //$email = $_SESSION['email'];
+    $customerID = $_SESSION['customerID'];
+    $customerType = $_SESSION['customerType'];
+
+
+//echo "Email Address is: " .$_SESSION['email'];
+echo "Customer type is: " .$_SESSION['customerType'];
+echo "UserName is: " .$_SESSION['user_name'];
+echo "CustomerID is: " .$_SESSION['customerID'];
+
 
 if (isset($_POST['submit'])){
     //will now save or update practitioner's page
-    if(!empty($_POST['specialties'])) {
-      $officeLocation = $_POST['inputAddress'].', '.$_POST['inputAddress2'];
-      //echo "$officeLocation";
-      $city = $_POST['inputCity'];
-      //echo "$city";
-      $province = $_POST['inputState'];
-      //echo "$state";
-      $zip = $_POST['inputZip'];
-      $specialties = implode(', ', $_POST['specialties']);
-      $aboutme = $_POST['aboutme'];
-      $leveleOfEducation = $_POST['leveleEducation'];
-      $nameOfInstitution = $_POST['nameInstitution'];
-      $affiliations = $_POST['affiliations'];
-      $licenseNumber = $_POST['licensenumber'];
-      $licenseCopy = $_POST['licensefile'];
-      $profilePhoto = $_POST['profilePicture'];
-    
-      $insertQuery = "UPDATE tblpractitionerprofile
-                SET officeLocation = '$officeLocation', city='$city', province = '$province', licenseNumber = '$licenseNumber', 
-                licenseCopy = '$licenseCopy', levelOfEducation='$leveleOfEducation', nameOfInstitution='$nameOfInstitution',
-                affiliations='$affiliations', specialties='$specialties', profilePhoto = '$profilePhoto', aboutMe='$aboutme'
-                WHERE customerID = $customerID";
-    echo "$insertQuery";
-        
+    if(!empty($_POST['specialties']) && !empty($_POST['wayCommunication']) &&  !empty($_POST['genders'])) {
+      
+        $specialties = implode(', ', $_POST['specialties']);
+        $wayCommunication = implode(', ', $_POST['wayCommunication']);
+        $specialties = implode(', ', $_POST['specialties']);
+        $genders = implode(', ', $_POST['genders']);
+        $age = $_POST['age'];
+        $relationshipstatus = $_POST['relationshipstatus'];
+        $isReligous = $_POST['isReligous'];
+        $aboutme = $_POST['aboutme'];
+
+
+        //echo $licensetypeList;
+        //need to insert @DB for tblpractitionerProfile
+        $insertQuery = "INSERT INTO `tblpatientbackground`(`age`, `relationshipstatus`, `isReligious`, 
+              `feelingToAddress`, `wayCommunication`, `genderOfTherapist`, `customerID`, `aboutme`) 
+              VALUES ('$age','$relationshipstatus','$isReligous',
+              '$specialties','$wayCommunication','$genders','$customerID','$aboutme')";
+   
             if (mysqli_query($con,$insertQuery))
             {
-                //beofre redericting to 
-                header("location: index.php");
-                echo '<script>alert("Item has been added")</script>';
+                //once done inserting to tblpractitionerprofile - then update the table of customer and tagged the customer as practitioner ID =2
+                $updateQuery = "UPDATE tblcustomers SET customerTypeId = 1 where customerID='$customerID'";
+                
+                if (mysqli_query($con,$updateQuery)){
+                    header("location: index.php");
+                }else{
+                    echo '<script>alert("Error occured while updating CustomerTypeId of customer.")</script>';
+                }
+                
+                //echo '<script>alert("Item has been added")</script>';
             }
             else {
-               
-                
-                echo '<script>alert("Error occured whitle adding item.")</script>';
+                echo '<script>alert("Error occured while building Practitioner profile.")</script>';
             }
 
     } else{
@@ -128,101 +132,77 @@ if (isset($_POST['submit'])){
       <!--Main bunner-->
 
       <section class="fillform">
-                      <br>
-                      <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Fill the form:</h4>
-                      <br><br>
-         <form id="practitionerProfile2" action="practitionerProfile2.php" method="POST" enctype="multipart/form-data">
-                <div class="form-group row align-items-center">
-                    <div class="form-group col-md-4">
-                        <label for="inputAddress">Address</label>
-                        <input name="inputAddress" id="inputAddress" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputAddress2">Address 2</label>
-                        <input name="inputAddress2" id="inputAddress2" type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-                    </div>
-                </div>
-                    <div class="form-row align-items-center">
-                        <div class="form-group col-md-3">
-                            <label for="inputCity">City</label>
-                            <input name="inputCity" id="inputCity" type="text" class="form-control" id="inputCity">
-                        </div>
-                        <div class="form-group col-md-3">
-                                <label for="inputState">State</label>
-                                <input name="inputState" id="inputState" type="text" class="form-control" id="inputState">
-                                <!-- <select id="inputState" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
-                                </select> -->
-                        </div>
-                            <div class="form-group col-md-2">
-                            <label for="inputZip">Zip</label>
-                            <input name="inputZip" id="inputZip" type="text" class="form-control" id="inputZip">
-                            </div>
-                    </div>
-                <div class="form-group col-md-4">
-                    <fieldset>      
-                        <legend>What are your other Specialties?</legend>      
-                        <input type="checkbox" name="specialties[]" value="Stress">Stress<br>      
-                        <input type="checkbox" name="specialties[]" value="Anxiety">Anxiety<br>      
-                        <input type="checkbox" name="specialties[]" value="Depression">Depression<br>  
-                        <input type="checkbox" name="specialties[]" value="Relationship Issues">Relationship Issues<br> 
-                        <input type="checkbox" name="specialties[]" value="Addiction">Addiction<br>   
-                        <input type="checkbox" name="specialties[]" value="Religion Issues">Religion Issues<br>     
-                        <br>      
-                            
-                    </fieldset> 
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="aboutme">About Me</label>
-                    <fieldset>
-                        <textarea class="form-control" id="aboutme" name="aboutme" rows="4" cols="50" placeholder="Tell us something about yourself..."></textarea>
-                    </fieldset>
-                </div>
+          <br>
+          <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Let us get to know you more:</h4>
+          <br><br>
+         <form id="patientProfile" action="patientProfile.php" method="POST" enctype="multipart/form-data">
+         <div class="form-group">
+            <label for="age">How old are you? </label>
+            <input type="text" class="form-group col-md-3" id="age" name="age" placeholder="Enter age">
+          </div>
+          <div class="form-group">
+            <label for="relationshipstatus">Relationship Status</label>
+            <select class="form-group col-md-3" id="relationshipstatus" style="width:30%">
+              <option value="Married"> Married</option>
+              <option value="Single"> Single</option>
+              <option value="Divorced"> Divorced</option>
+              <option value="Separated"> Separated</option>
+              <option value="Complicated"> Complicated</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="isReligous">Do you consider yourself religious? </label>
+            <select class="form-group col-md-3" id="isReligous" style="width:30%">
+              <option value="Married"> Yes</option>
+              <option value="Single"> No</option>
+              
+            </select>
+          </div> 
+          <div class="form-group col-md-4">
+              <fieldset>      
+                  <legend>How do feel and want to adress?</legend>      
+                  <input type="checkbox" name="specialties[]" value="Stress"> Stress<br>      
+                  <input type="checkbox" name="specialties[]" value="Anxiety"> Anxiety<br>      
+                  <input type="checkbox" name="specialties[]" value="Depression"> Depression<br>  
+                  <input type="checkbox" name="specialties[]" value="Relationship Issues"> Relationship Issues<br> 
+                  <input type="checkbox" name="specialties[]" value="Addiction"> Addiction<br>   
+                  <input type="checkbox" name="specialties[]" value="Religion Issues"> Religion Issues<br>     
+                  <br>      
+                      
+              </fieldset> 
+          </div>
+          <div class="form-group col-md-5">
+                <fieldset>      
+                    <legend>Preferred way of communication? (You can choose all.)</legend>      
+                    <input type="checkbox" name="wayCommunication[]" value="Stress"> Personal<br>      
+                    <input type="checkbox" name="wayCommunication[]" value="Anxiety"> Phone<br>      
+                    <input type="checkbox" name="wayCommunication[]" value="Depression"> Video<br>   
+                    <br>              
+                </fieldset> 
+            </div>
+            
+          <div class="form-group col-md-5">
+              <fieldset>      
+                  <legend>Preferred gender of your therapist? (You can choose all.)</legend>      
+                  <input type="checkbox" name="genders[]" value="Stress"> Male<br>      
+                  <input type="checkbox" name="genders[]" value="Anxiety"> Female<br>      
+                  <input type="checkbox" name="genders[]" value="Depression"> LGBTQ<br>   
+                  <br>              
+              </fieldset> 
+          </div>
+          <div class="form-group col-md-4">
+              <label for="aboutme">Tell us  more about yourself...</label>
+              <fieldset>
+                  <textarea class="form-control" id="aboutme" name="aboutme" rows="4" cols="50" placeholder="Tell us something about yourself..."></textarea>
+              </fieldset>
+          </div>
+                
+          <input type="submit" name="submit" value="Update Profile" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >         
                 <br>
-                <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Education:</h4>      
-                    <br>    
-                    <div class="form-group col-md-4">
-                        <label for="leveleEducation">Level of Education</label>
-                        <input name="leveleEducation" id="leveleEducation" type="text" class="form-control" id="leveleEducation" placeholder="Bachelor, Masters">
-                    </div>    
-                
-                   <div class="form-group col-md-4">
-                        <label for="nameInstitution">Name of Institution</label>
-                        <input name="nameInstitution" id="nameInstitution" type="text" class="form-control" id="nameInstitution" placeholder="College, University">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="affiliations">Affiliations</label>
-                        <input name="affiliations" id="affiliations" type="text" class="form-control" id="affiliations" placeholder="Affiliations">
-                    </div>
-                    
-                        <div class="form-group col-md-3">
-                            <label for="licensenumber">License Number</label>
-                            <input name="licensenumber" id="licensenumber" type="text" class="form-control" id="licensenumber">
-                        </div>
-                            <div class="form-group col-md-3">
-                                <label for="licensefile">Upload License</label>
-                                <fieldset>
-                                    <input type="file" name="licensefile" id="licensefile"/>
-                                </fieldset>
-                            </div>
-                            
-                            <div class="form-group col-md-3">
-                                <label for="profilePicture">Upload Profile Picture</label>
-                                <fieldset>
-                                    <input type="file" name="profilePicture" id="profilePicture"/>
-                                </fieldset>
-                            </div>
-                            
-                            </div>
-                   
-                
-                            <input type="submit" id="form-submit" class="main-button" name="submit" value="Update Profile">
-                      </br>
-                <div>
-                    <p><br><br></p>
-                      <br>
-                </div>
+          <div>
+              <p><br><br></p>
+                <br>
+          </div>
             </form>
             
         </div>

@@ -1,6 +1,4 @@
 
-
-
 <?php 
 include("connect.php");
 
@@ -37,7 +35,8 @@ if (isset($_POST['submit'])){
       $insertQuery = "UPDATE tblpractitionerprofile
                 SET officeLocation = '$officeLocation', city='$city', province = '$province', licenseNumber = '$licenseNumber', 
                 licenseCopy = '$licenseCopy', levelOfEducation='$leveleOfEducation', nameOfInstitution='$nameOfInstitution',
-                affiliations='$affiliations', specialties='$specialties', profilePhoto = '$profilePhoto', aboutMe='$aboutme'
+                affiliations='$affiliations', specialties='$specialties', profilePhoto = '$profilePhoto', aboutMe='$aboutme',
+                preferredPatientGender = '$preferredPatientGender'
                 WHERE customerID = $customerID";
     echo "$insertQuery";
         
@@ -163,14 +162,23 @@ if (isset($_POST['submit'])){
                 <div class="form-group col-md-4">
                     <fieldset>      
                         <legend>What are your other Specialties?</legend>      
-                        <input type="checkbox" name="specialties[]" value="Stress">Stress<br>      
-                        <input type="checkbox" name="specialties[]" value="Anxiety">Anxiety<br>      
-                        <input type="checkbox" name="specialties[]" value="Depression">Depression<br>  
-                        <input type="checkbox" name="specialties[]" value="Relationship Issues">Relationship Issues<br> 
-                        <input type="checkbox" name="specialties[]" value="Addiction">Addiction<br>   
-                        <input type="checkbox" name="specialties[]" value="Religion Issues">Religion Issues<br>     
+                        <input type="checkbox" name="specialties[]" value="Stress"> Stress<br>      
+                        <input type="checkbox" name="specialties[]" value="Anxiety"> Anxiety<br>      
+                        <input type="checkbox" name="specialties[]" value="Depression"> Depression<br>  
+                        <input type="checkbox" name="specialties[]" value="Relationship Issues"> Relationship Issues<br> 
+                        <input type="checkbox" name="specialties[]" value="Addiction"> Addiction<br>   
+                        <input type="checkbox" name="specialties[]" value="Religion Issues"> Religion Issues<br>     
                         <br>      
                             
+                    </fieldset> 
+                </div>
+                <div class="form-group col-md-4">
+                    <fieldset>      
+                        <legend>Preferred gender of your therapist? (You can choose all.)</legend>      
+                        <input type="checkbox" name="genders[]" value="Stress"> Male<br>      
+                        <input type="checkbox" name="genders[]" value="Anxiety"> Female<br>      
+                        <input type="checkbox" name="genders[]" value="Depression"> LGBTQ<br>   
+                        <br>              
                     </fieldset> 
                 </div>
                 <div class="form-group col-md-4">
@@ -216,8 +224,8 @@ if (isset($_POST['submit'])){
                             
                             </div>
                    
-                
-                            <input type="submit" id="form-submit" class="main-button" name="submit" value="Update Profile">
+                            <input type="submit" name="submit" value="Update Profile" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >
+                            
                       </br>
                 <div>
                     <p><br><br></p>

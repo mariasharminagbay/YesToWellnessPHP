@@ -10,19 +10,24 @@ if (session_id() == "")
     //
     
     $error="";
-    $email = $_SESSION['email'];
+    
+    $customerID = $_SESSION['customerID'];
+    //echo $customerID;
+    $customerType = $_SESSION['customerType'];
+   // echo $customerType;
     //echo '<script>alert('.$email.')</script>';
     if (isset($_POST['submit'])){
-      $result = mysqli_query($con, "select customerId, isNew, customerTypeId from tblcustomers where emailAddress ='$email'");
+      $result = mysqli_query($con, "select customerId, isNew, customerTypeId, emailAddress from tblcustomers where emailAddress ='$email'");
       $retrievecustomerinfo = mysqli_fetch_assoc($result);
       $userid = $retrievecustomerinfo['customerId'];
       $userisnew = $retrievecustomerinfo['isNew'];
-      $customertypeid = $retrievecustomerinfo['customerTypeId'];
+      $customerType = $retrievecustomerinfo['customerTypeId'];
+      $email = $retrievecustomerinfo['emailAddress'];
       //echo '<script>alert($customertypeid)</script>';
 
       $_SESSION['email']=$email;
-      $_SESSION['customerId']=$userid;
-      $_SESSION['customerType']=$customertypeid;
+      $_SESSION['customerID']=$userid;
+      $_SESSION['customerType']=$customerType;
 
       if($userisnew == 0) {
         //this will load the form if customer is counselor or patient    
@@ -116,12 +121,22 @@ if (session_id() == "")
                     </ul>
                   </div>
                 </div>
-                <div class="rd-nav-item">
+
+               
+
+              <div class="rd-nav-item">
+              <?php if ($customerType == 1 ) { ?>
+                  <a class="button button-primary button-md button-round-2" href="patientProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450">Get Started</a>
+                <?php } ?>   
+                <?php if ($customerType == 2 ) { ?>
+                  <a class="button button-primary button-md button-round-2" href="appointments_practitioners.php" data-caption-animate="fadeInUp" data-caption-delay="450"> Get Started</a>
+                <?php } ?>  
                   <!-- <div class="btn-wrap"><a class="button button-secondary button-sm" href="#">Get Started</a></div> -->
-                  <form method="POST" action="index.php" accept-charset="UTF-8">
+                  <!-- <form method="POST" action="index.php" accept-charset="UTF-8"> 
                     <div class="btn-wrap"><input type="submit"  name="submit" value="Get Started" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" > </div>
-                  </form>
-                  </div>
+                  </form>  -->
+                </div>
+                 
               </div>
             </div>
           </nav>
@@ -136,9 +151,13 @@ if (session_id() == "")
               <div class="col-lg-5">
                 <h1 data-caption-animate="fadeInUp" data-caption-delay="100">Free <br class="br-none"> Your Mind</h1>
                 <p class="lead text-custom-blue" data-caption-animate="fadeInUp" data-caption-delay="250">Are you tired and exhausted? Do you want someone to talk to? Please don't hesitate.</br> We are here to HELP!</p>
-                <div class="btn-wrap">
-                  <div class="group-xxl group-middle"><a class="button button-primary button-md button-round-2" href="#" data-caption-animate="fadeInUp" data-caption-delay="450"> Book Now</a></div>
-                </div>
+                <!-- <div class="btn-wrap">
+                  <div class="group-xxl group-middle">
+
+                    <a class="button button-primary button-md button-round-2" href="patientProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450"> Book Now</a>
+                  
+                  </div>
+                </div> -->
                 <!-- <div class="phone-wrap phone-wrap-2">
                   <div class="phone-link-title">P:</div><a class="phone-link" href="tel:#"> 1 000 234 7890</a>
                 </div>

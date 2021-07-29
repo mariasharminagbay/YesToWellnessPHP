@@ -17,16 +17,20 @@ if (isset($_POST['submit']))
   if (email_exists($email,$con))
   {
     //echo("email exists");
-    $result = mysqli_query($con, "select password, firstname from tblcustomers where emailAddress ='$email'");
+    $result = mysqli_query($con, "select customerId, password, firstname, customerTypeId from tblcustomers where emailAddress ='$email'");
     $retrievepassword = mysqli_fetch_assoc($result);
     $user_pass = $retrievepassword['password'];
     $user_name = $retrievepassword['firstname'];
+    $userid = $retrievepassword['customerId'];
     //echo('Password from DB is '.$user_pass);
-	
+    $customerType = $retrievepassword['customerTypeId'];
+
     if(password_verify($password,$user_pass))   //$retrievepassword['password']))
     {
       $_SESSION['email'] = $email;
       $_SESSION['user_name'] = $user_name;
+      $_SESSION['customerType']=$customerType;
+      $_SESSION['customerID']=$userid;
       echo $_SESSION['email'];
       header("location: index.php");
     }else 

@@ -1,59 +1,35 @@
-
 <?php 
-include("connect.php");
 
 if (session_id() == "") 
     session_start(); 
 
-$_SESSION['customerType'] = 2;
-echo "Email Address is: " .$_SESSION['email'];
+    include("connect.php");
 
+    $error="";
+    
+    $customerID = $_SESSION['customerID'];
+    //echo $customerID;
+    $customerType = $_SESSION['customerType'];
+    $error="";
 
-echo "Customer type is: " .$_SESSION['customerType'];
+        if (isset($_POST['submit'])){
+            echo '<script>alert("POPUP")</script>';
+        /* $searchword = $_POST['searchword'];
+        $query_searchproduct = mysqli_query($con, "SELECT `productname`, `productDescription`, `productPrice`, `productImage` FROM `products` WHERE productname LIKE '%$searchword%'");
+        }
+        else{ */
+         //   $query_searchproduct = mysqli_query($con, "SELECT `productname`, `productDescription`, `productPrice`, `productImage` FROM `products` WHERE productname LIKE '%$searchword%'");
+        $query_searchproduct = mysqli_query($con, "SELECT `PR.practionerProfileId`, `PR.customerID` , `PR.officeLocation` , `PR.city` , `PR.province` , `PR.zip` , `PR.licenseType` , `PR.licenseNumber` , `PR.licenseCopy` , `PR.levelOfEducation` , `PR.nameOfInstitution` , `PR.profilePhoto` , `PR.affiliations` , `PR.specialties` , `PR.preferredPatientGender` FROM tblpractitionerprofile PR WHERE `PR.specialties`  LIKE (SELECT `PB.feelingToAddress` from tblpatientbackground PB where `PB.customerID` = 24)");
+        $numEmail=mysqli_num_rows($query_searchproduct);
+        $error= "After isset. Total rows returned: " +  $numEmail;
+        echo '<script>alert("POPUP")</script>';
+        //echo '<script>alert(' + $numEmail+ ')</script>';
+        
+    }
 
-echo "UserName is: " .$_SESSION['user_name'];
-echo "CustomerID is: " .$_SESSION['customerID'];
-
-$email = $_SESSION['email'];
-$customerID = $_SESSION['customerID'];
-
-
-if (isset($_POST['submit'])){
-    //will now save or update practitioner's page
-    //if(!empty($_POST['licensetype'])) {
-      
-        //$licensetypeList = implode(', ', $_POST['licensetype']);
-        $licensetype = $_POST['licensetype'];
-
-        //echo $licensetypeList;
-        //need to insert @DB for tblpractitionerProfile
-        $insertQuery = "INSERT INTO tblpractitionerprofile (`customerID`, `officeLocation`, `city`, `province`, `zip`, `licenseType`, `licenseNumber`, `licenseCopy`, `levelOfEducation`, `nameOfInstitution`, `profilePhoto`, `affiliations`, `specialties`, `aboutMe`) VALUES ('$customerID', '','', '', '', '$licensetype', '', '', '', '', '', '', '', '')";
-   
-            if (mysqli_query($con,$insertQuery))
-            {
-                //once done inserting to tblpractitionerprofile - then update the table of customer and tagged the customer as practitioner ID =2
-                $updateQuery = "UPDATE tblcustomers SET customerTypeId = 2 where emailAddress='$email'";
-                
-                if (mysqli_query($con,$updateQuery)){
-                    header("location: practitionerProfile2.php");
-                }else{
-                    echo '<script>alert("Error occured while updating CustomerTypeId of customer.")</script>';
-                }
-                
-                //echo '<script>alert("Item has been added")</script>';
-            }
-            else {
-                echo '<script>alert("Error occured while building Practitioner profile.")</script>';
-            }
-
-    //} else{
-        //will ask the user to check one of the check boxes
-    //    echo '<script>alert("Kindly choose license type.")</script>';
-    //}
-}
+        
 
 ?>
-
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
@@ -61,15 +37,23 @@ if (isset($_POST['submit'])){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- <link rel="icon" href="images/favicon.ico" type="image/x-icon"> -->
     <link rel="icon" href="images/YTWlogo.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=DM+Sans:400,400i,500,500i,700,700i&amp;display=swap">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <style>.ie-panel{display: none;background: #212121;padding: 10px 0;box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3);clear: both;text-align:center;position: relative;z-index: 1;} html.ie-10 .ie-panel, html.lt-ie-10 .ie-panel {display: block;}</style>
-  </head>
+    
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    <link rel="stylesheet" href="assets/css/templatemo-style.css">
+    <link rel="stylesheet" href="assets/css/owl.css"> 
+    <link href="assets/js/bootstrap.min.css" rel="stylesheet">
+
+     
+</head>
   <body>
+  <?php  $error ?>
     <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <div class="preloader">
       <div class="preloader-body">
@@ -109,64 +93,73 @@ if (isset($_POST['submit'])){
                       
                       <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
                       </li>
-                     <!-- deleted the Hello  Username snipet--> 
+                      
+                      <?php 
+
+                        if (session_id() == "") { ?>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
+                          </li>
+                      <?php } ?> 
+                      <?php if (session_id() != "") { ?>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="logout.php">Logout</a>
+                          </li>
+                      <?php } ?> 
+                      <li class="rd-nav-item"><a class="rd-nav-link">Hello   <strong style="color:green;font-size:30px;"> <?php echo $_SESSION['user_name']; ?> </strong> </a>
+                   
+                    
                     </ul>
                   </div>
                 </div>
-                <!-- <div class="rd-nav-item">
-                  <div class="btn-wrap"><a class="button button-secondary button-sm" href="#">Get Started</a></div>
-                </div> -->
               </div>
             </div>
           </nav>
         </div>
       </header>
       <!--Main bunner-->
-      <div class="section section-main-bunner context-dark" id="home">
-        <div class="main-bunner-img bg-overlay-1" style="background-image: url(&quot;images/mentalillness_hand3.jpg&quot;); background-size: cover;"></div>
-        <div class="main-bunner-inner">
-          <div class="container wide">
-            <div class="row justify-content-left">
-                <form method="POST" action="practitionerProfile.php" enctype="multipart/form-data">
-                <h4 data-caption-animate="fadeInUp" data-caption-delay="100">To get started, please select your license type</h4>
-                      </br>
-                <!-- <input type="checkbox" value="LCSW" name="licensetype[]">  LCSW - License Clinical Social Worker<br/>
-                <input type="checkbox" value="LMSW" name="licensetype[]">  LMSW - License Master Social Worker<br/>
-                <input type="checkbox" value="MHC" name="licensetype[]">  MHC - Mental Health Counselor<br/>
-                <input type="checkbox" value="LMFT" name="licensetype[]">  LMFT - Licensed Marriage and Family Therapist<br/>
-                <input type="checkbox" value="LPC" name="licensetype[]">  LPC - Licensed Professional Counselor<br/>
-                   -->  
-                  <input type="radio" value="LCSW" name="licensetype">  LCSW - License Clinical Social Worker<br/>
-                  <input type="radio" value="LMSW" name="licensetype">  LMSW - License Master Social Worker<br/>
-                  <input type="radio" value="MHC" name="licensetype">  MHC - Mental Health Counselor<br/>
-                  <input type="radio" value="LMFT" name="licensetype">  LMFT - Licensed Marriage and Family Therapist<br/>
-                  <input type="radio" value="LPC" name="licensetype">  LPC - Licensed Professional Counselor<br/>
-                  </br>
-                    <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Requirements</h4>
-                    <ul>
-                        <li> * Licensed by the State Board to provide counseling(e.g., LCSW,LMSW,MHC,LMFT,LPC) </li>
-                        <li> * Experience in counseling for adults, couples, and/or teend </li>
-                        <li> * Excellent writing skills </li>
-                        <li> * Reliable internet connection </li>
-                        <li> * Currently residing in Canada </li>
+
+      <section class="fillform">
+        <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                  <br>
+                <div class="section-heading">
+                    <h2>List of Appointments</h2>
+                </div>
+                <form id="patientMatchPractitioner" action="patientMatchPractitioner.php" method="post" >
+                 <div class="default-table">
+                    <table>
+                    <thead>
+                        <tr>
+                        <th>Product no.</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        </tr>
+                    </thead>
+                        <tbody>
                         
-                    </ul>
-                      </br>
-                    <h4 data-caption-animate="fadeInUp" data-caption-delay="100" style="font-size: 20px; font-style: italic; ">Note: Counselors are not YesToWellnessa employees but independent service providers.</h4>
+                        </tbody>
+                    </table>
 
-                <p>
-                    <input type="submit" name="submit" value="Get Started" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >
-                  
-                </p>
-
+                
+                </div>
                 </form>
+                     
+              </div>
+            </div>
+        </div>   
+        <div class="col-md-6 col-sm-12">
+          <p><br></p>
+          <div class="col-md-4">
+            <div class="filled-rounded-button">
+              <a href="patientBookingPage.php">Request for Appointment</a>
             </div>
           </div>
         </div>
-      </div>
-      <!--Testimonials-->
-     
+        <div>
 
+                     
+    </section>
+      <!--Testimonials-->
        <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

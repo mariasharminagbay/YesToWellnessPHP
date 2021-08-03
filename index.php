@@ -126,7 +126,7 @@ if (session_id() == "")
 
               <div class="rd-nav-item">
               <?php if ($customerType == 1 ) { ?>
-                  <a class="button button-primary button-md button-round-2" href="patientProfile.php" data-caption-animate="fadeInUp" data-caption-delay="450">Get Started</a>
+                  <a class="button button-primary button-md button-round-2" href="patientAppointmentList.php" data-caption-animate="fadeInUp" data-caption-delay="450">Get Started</a>
                 <?php } ?>   
                 <?php if ($customerType == 2 ) { ?>
                   <a class="button button-primary button-md button-round-2" href="appointments_practitioners.php" data-caption-animate="fadeInUp" data-caption-delay="450"> Get Started</a>

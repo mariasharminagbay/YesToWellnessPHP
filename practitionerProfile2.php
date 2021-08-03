@@ -15,7 +15,7 @@ $customerType = $_SESSION['customerType'];
 
 if (isset($_POST['submit'])){
     //will now save or update practitioner's page
-    if(!empty($_POST['specialties'])) {
+    //if(!empty($_POST['specialties'])) {
       $officeLocation = $_POST['inputAddress'].', '.$_POST['inputAddress2'];
       //echo "$officeLocation";
       $city = $_POST['inputCity'];
@@ -23,7 +23,7 @@ if (isset($_POST['submit'])){
       $province = $_POST['inputState'];
       //echo "$state";
       $zip = $_POST['inputZip'];
-      $specialties = implode(', ', $_POST['specialties']);
+      $specialties = $_POST['specialties'];  //implode(', ', $_POST['specialties']);
       $aboutme = $_POST['aboutme'];
       $leveleOfEducation = $_POST['leveleEducation'];
       $nameOfInstitution = $_POST['nameInstitution'];
@@ -52,10 +52,10 @@ if (isset($_POST['submit'])){
                 echo '<script>alert("Error occured whitle adding item.")</script>';
             }
 
-    } else{
+    //} else{
         //will ask the user to check one of the check boxes
-        echo '<script>alert("Kindly choose license type.")</script>';
-    }
+    //    echo '<script>alert("Kindly choose license type.")</script>';
+    //}
 }
 
 ?>
@@ -162,12 +162,12 @@ if (isset($_POST['submit'])){
                 <div class="form-group col-md-4">
                     <fieldset>      
                         <legend>What are your other Specialties?</legend>      
-                        <input type="checkbox" name="specialties[]" value="Stress"> Stress<br>      
-                        <input type="checkbox" name="specialties[]" value="Anxiety"> Anxiety<br>      
-                        <input type="checkbox" name="specialties[]" value="Depression"> Depression<br>  
-                        <input type="checkbox" name="specialties[]" value="Relationship Issues"> Relationship Issues<br> 
-                        <input type="checkbox" name="specialties[]" value="Addiction"> Addiction<br>   
-                        <input type="checkbox" name="specialties[]" value="Religion Issues"> Religion Issues<br>     
+                        <input type="radio" name="specialties" value="Stress"> Stress<br>      
+                        <input type="radio" name="specialties" value="Anxiety"> Anxiety<br>      
+                        <input type="radio" name="specialties" value="Depression"> Depression<br>  
+                        <input type="radio" name="specialties" value="Relationship Issues"> Relationship Issues<br> 
+                        <input type="radio" name="specialties" value="Addiction"> Addiction<br>   
+                        <input type="radio" name="specialties" value="Religion Issues"> Religion Issues<br>     
                         <br>      
                             
                     </fieldset> 
@@ -175,9 +175,9 @@ if (isset($_POST['submit'])){
                 <div class="form-group col-md-4">
                     <fieldset>      
                         <legend>Preferred gender of your therapist? (You can choose all.)</legend>      
-                        <input type="checkbox" name="genders[]" value="Stress"> Male<br>      
-                        <input type="checkbox" name="genders[]" value="Anxiety"> Female<br>      
-                        <input type="checkbox" name="genders[]" value="Depression"> LGBTQ<br>   
+                        <input type="radio" name="genders" value="Stress"> Male<br>      
+                        <input type="radio" name="genders" value="Anxiety"> Female<br>      
+                        <input type="radio" name="genders" value="Depression"> LGBTQ<br>   
                         <br>              
                     </fieldset> 
                 </div>

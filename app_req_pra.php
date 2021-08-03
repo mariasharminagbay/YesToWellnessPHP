@@ -1,3 +1,30 @@
+<?php
+include_once('connect.php');
+include_once('functions.php');
+
+
+session_start();
+
+
+  
+     
+     if (isset($_POST['ViewDetails'])){
+       
+      // $rows=mysqli_fetch_assoc($result1);
+       $id1 = $_SESSION['patientProfileId1'];
+       
+      $query1= "SELECT * FROM tblappointmentrequests where patientProfileId =$id1";
+      
+
+     $result1=mysqli_query($con,$query1); 
+     
+      
+   }
+  
+                             
+?>
+
+
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
@@ -66,41 +93,37 @@
           </nav>
         </div>
       </header>
-      <!--Main bunner-->
-        <!-- <div class="section section-main-bunner context-dark" id="home">
-        <div class="main-bunner-img bg-overlay-1" style="background-image: url(&quot;images/slide-01.jpg&quot;); background-size: cover;"></div>
-        <div class="main-bunner-inner">
-          <div class="container wide">
-            <div class="row justify-content-left">
-              <div class="col-lg-5">
-                <h1 data-caption-animate="fadeInUp" data-caption-delay="100">Free <br class="br-none"> Your Mind</h1>
-                <p class="lead text-custom-blue" data-caption-animate="fadeInUp" data-caption-delay="250">Are you tired and exhausted? Do you want someone to talk to? Please don't hesitate.</br> We are here to HELP!</p>
-                <div class="btn-wrap">
-                  <div class="group-xxl group-middle"><a class="button button-primary button-md button-round-2" href="#" data-caption-animate="fadeInUp" data-caption-delay="450"> Book Now</a></div>
-                </div> --> 
-                <!-- <div class="phone-wrap phone-wrap-2">
-                  <div class="phone-link-title">P:</div><a class="phone-link" href="tel:#"> 1 000 234 7890</a>
-                </div>
-                <p class="text-custom-blue">178 West 27th Street, Suite 527, New York NY 10012, United States</p> 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>-->  
-         
-           
+      
                
-      <!-- <div class="section section-custom">
+      <div class="section section-custom">
         <div class="container wide">
           <div class="text-center">
-            <h2 class="title">Are You a Qualified <br class="br-none"> Therapist?</h2>
-            <div class="subtitle-2 big">Join our team to push your career forward today!</div>
-            <div class="row justify-content-center"><a class="button button-secondary button-md" href="#">Join Us</a></div>
-            <div class="img-wrap"><img src="images/home-4-830x446.jpg" alt="" width="830" height="446"/>
-            </div>
+          
+            <table class="table" text-align="center" >
+                <th colspan="2; border=3"><h4 style="color:Green;"> Appointment Details</h4></th>
+
+                
+                    <?php 
+                        while($rows=mysqli_fetch_assoc($result1))
+                        { ?>
+                           <tr> <td><?php echo $rows['patientProfileId'];?></td></tr>
+                           <tr> <td><?php echo $rows['scheduleDate'];?></td></tr>
+                           <tr> <td><?php echo $rows['scheduleTime'];?></td></tr>
+                           <tr> <td><?php echo $rows['appointmentRequestID'];?></td></tr>
+                           <tr> <td><?php echo $rows['virtualRoom'];?></td></tr>
+                           <tr><td><?php echo $rows['notes'];?></td></tr>
+                           <tr> <td></td>
+
+                          <?php } 
+
+                                                     
+                     ?>
+                        
+            </table>
+          
           </div>
         </div>
-      </div> -->
+      </div>
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

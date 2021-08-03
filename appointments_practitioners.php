@@ -1,8 +1,19 @@
 <?php
-include("connect.php");
-include("functions.php");
+include_once('connect.php');
+include_once('functions.php');
+    
 
+$query1= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=1";
+$query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
+     $result1=mysqli_query($con,$query1);   
+     $result2=mysqli_query($con,$query2); 
+    session_start();
+    
+    
+   
+   
 
+     
 ?>
 
 <!DOCTYPE html>
@@ -58,11 +69,18 @@ include("functions.php");
                       <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
                       </li>
 
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="appointments_practitioners.php">Appointmets</a>
-                      </li>
+                      <?php 
                       
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Logout</a>
+                      if (session_id() == "") { ?>
+                        <li class="rd-nav-item"><a class="rd-nav-link" href="appointments_practitioners.php">Appointmets</a>
                       </li>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
+                          </li>
+                      <?php } ?> 
+                      <?php if (session_id() != "") { ?>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="logout.php">Logout</a>
+                          </li>
+                      <?php } ?> 
                     
                       
                     </ul>
@@ -73,41 +91,45 @@ include("functions.php");
           </nav>
         </div>
       </header>
-      <!--Main bunner-->
-        <!-- <div class="section section-main-bunner context-dark" id="home">
-        <div class="main-bunner-img bg-overlay-1" style="background-image: url(&quot;images/slide-01.jpg&quot;); background-size: cover;"></div>
-        <div class="main-bunner-inner">
-          <div class="container wide">
-            <div class="row justify-content-left">
-              <div class="col-lg-5">
-                <h1 data-caption-animate="fadeInUp" data-caption-delay="100">Free <br class="br-none"> Your Mind</h1>
-                <p class="lead text-custom-blue" data-caption-animate="fadeInUp" data-caption-delay="250">Are you tired and exhausted? Do you want someone to talk to? Please don't hesitate.</br> We are here to HELP!</p>
-                <div class="btn-wrap">
-                  <div class="group-xxl group-middle"><a class="button button-primary button-md button-round-2" href="#" data-caption-animate="fadeInUp" data-caption-delay="450"> Book Now</a></div>
-                </div> --> 
-                <!-- <div class="phone-wrap phone-wrap-2">
-                  <div class="phone-link-title">P:</div><a class="phone-link" href="tel:#"> 1 000 234 7890</a>
-                </div>
-                <p class="text-custom-blue">178 West 27th Street, Suite 527, New York NY 10012, United States</p> 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>-->  
+      
          
            
                
-      <!-- <div class="section section-custom">
+      <div class="section section-custom">
         <div class="container wide">
           <div class="text-center">
-            <h2 class="title">Are You a Qualified <br class="br-none"> Therapist?</h2>
-            <div class="subtitle-2 big">Join our team to push your career forward today!</div>
-            <div class="row justify-content-center"><a class="button button-secondary button-md" href="#">Join Us</a></div>
-            <div class="img-wrap"><img src="images/home-4-830x446.jpg" alt="" width="830" height="446"/>
-            </div>
+             <form name="f1" action="app_req_pra.php" method="post">
+            <table class="table" text-align="center" >
+                <tr>
+                    <td><th colspan="2; border=3"><h4 style="color:Green;"> Requested Appointments</h4></th></td>
+                    <td><th colspan="3"><h4 style="color:Green;"> Scheduled Appointments</h4></th></td>
+                <tr>
+
+                <tr text-align="center">
+                    <?php 
+                        while($rows=mysqli_fetch_assoc($result1))
+                        { ?>
+                            <td><?php $_SESSION['patientProfileId1']= $rows['patientProfileId']; echo $rows['patientProfileId'];?></td>
+                            <td><?php echo $rows['scheduleDate'];?></td>
+                            <td><?php echo $rows['scheduleTime'];?></td>
+                            <td><input type="submit" name="ViewDetails" value= "View Details" class="btn btn-info pull-right"></td>
+
+                            <?php } 
+                            
+                     while($rows=mysqli_fetch_assoc($result2))
+                     { ?>
+                            <td><?php $_SESSION['patientProfileId2']= $rows['patientProfileId']; echo $rows['patientProfileId'];?></td>
+                            <td><?php echo $rows['scheduleDate'];?></td>
+                            <td><?php echo $rows['scheduleTime'];?></td>
+                            <td><input type="submit" name="ViewDetails" value= "View Details" class="btn btn-info pull-right" onclick="f1.action = 'app_details_pra.php'"></td>
+                    <?php 
+                } ?>
+                        </tr>
+            </table>
+            </form>
           </div>
         </div>
-      </div> -->
+      </div>
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

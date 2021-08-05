@@ -11,7 +11,7 @@ if (session_id() == "")
     //echo $customerID;
     $customerType = $_SESSION['customerType'];
     $error="";
-
+    echo '<script>alert("before")</script>';
         if (isset($_POST['submit'])){
             echo '<script>alert("POPUP")</script>';
         /* $searchword = $_POST['searchword'];
@@ -19,13 +19,15 @@ if (session_id() == "")
         }
         else{ */
          //   $query_searchproduct = mysqli_query($con, "SELECT `productname`, `productDescription`, `productPrice`, `productImage` FROM `products` WHERE productname LIKE '%$searchword%'");
-        $query_searchproduct = mysqli_query($con, "SELECT `PR.practionerProfileId`, `PR.customerID` , `PR.officeLocation` , `PR.city` , `PR.province` , `PR.zip` , `PR.licenseType` , `PR.licenseNumber` , `PR.licenseCopy` , `PR.levelOfEducation` , `PR.nameOfInstitution` , `PR.profilePhoto` , `PR.affiliations` , `PR.specialties` , `PR.preferredPatientGender` FROM tblpractitionerprofile PR WHERE `PR.specialties`  LIKE (SELECT `PB.feelingToAddress` from tblpatientbackground PB where `PB.customerID` = 24)");
-        $numEmail=mysqli_num_rows($query_searchproduct);
-        $error= "After isset. Total rows returned: " +  $numEmail;
-        echo '<script>alert("POPUP")</script>';
+        //$query_searchproduct = mysqli_query($con, "SELECT `PR.practionerProfileId` as practionerProfileId, `PR.customerID` , `PR.officeLocation` , `PR.city` , `PR.province` , `PR.zip` , `PR.licenseType` , `PR.licenseNumber` , `PR.licenseCopy` , `PR.levelOfEducation` , `PR.nameOfInstitution` , `PR.profilePhoto` , `PR.affiliations` , `PR.specialties` , `PR.preferredPatientGender` FROM tblpractitionerprofile PR WHERE `PR.specialties`  LIKE (SELECT `PB.feelingToAddress` from tblpatientbackground PB where `PB.customerID` = 24)");
+        $query_searchproduct = mysqli_query($con, "SELECT * from tblpractitionerprofile");
+        //$numEmail=mysqli_num_rows($query_searchproduct);
+       // $error= "After isset. Total rows returned: " +  $numEmail;
+       //$numproductname = mysqli_num_rows ($query_searchproduct);
+        //echo '<script>alert($numproductname)</script>';
+        //$error= $numproductname;
         //echo '<script>alert(' + $numEmail+ ')</script>';
-        
-    }
+        }
 
         
 
@@ -53,7 +55,7 @@ if (session_id() == "")
      
 </head>
   <body>
-  <?php  $error ?>
+  <?php echo $error ?>
     <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <div class="preloader">
       <div class="preloader-body">
@@ -118,15 +120,33 @@ if (session_id() == "")
       <!--Main bunner-->
 
       <section class="fillform">
+      <?php echo $error ?>
         <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
                   <br>
                 <div class="section-heading">
-                    <h2>List of Appointments</h2>
+                    <h2>List of Available Practitioner(s)</h2>
                 </div>
-                <form id="patientMatchPractitioner" action="patientMatchPractitioner.php" method="post" >
-                 <div class="default-table">
+                <form id="patientMatchPractitioner" action="patientMatchPractitioner.php" method="POST" >
+                <input type="submit" id="submit" class="main-button" name="submit" value="Search Item" />
+                <?php while($row = $query_searchproduct->fetch_array()){ ?>
+                    <div class="col-md-4 col-sm-6">
+                      <div class="blog-post">
+                        <div class="blog-thumb">
+                          <!--<img src="assets/images/product-1-720x480.jpg" alt=""> -->
+                          <?php echo $row[5]; ?>
+                        </div>
+                        <div class="down-content">
+                          <span>$ <?php echo $row[2]; ?> </span>
+                          <h4> "<?php echo $row[0] ?>" </h4>
+                          <p> <?php echo $row[1] ?></p>  
+                        </div>
+                      </div>
+                    </div>
+                <?php } ?>
+
+                <div class="default-table">
                     <table>
                     <thead>
                         <tr>
@@ -136,14 +156,15 @@ if (session_id() == "")
                         </tr>
                     </thead>
                         <tbody>
+                       
                         
                         </tbody>
                     </table>
 
                 
                 </div>
-                </form>
-                     
+               
+                </form>        
               </div>
             </div>
         </div>   

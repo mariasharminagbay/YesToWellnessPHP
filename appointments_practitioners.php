@@ -7,13 +7,8 @@ $query1= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=1";
 $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
      $result1=mysqli_query($con,$query1);   
      $result2=mysqli_query($con,$query2); 
-    session_start();
-    
-    
-   
-   
+    // session_start();
 
-     
 ?>
 
 <!DOCTYPE html>
@@ -99,34 +94,58 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
         <div class="container wide">
           <div class="text-center">
              <form name="f1" action="app_req_pra.php" method="post">
-            <table class="table" text-align="center" >
+                 <table style="margin-left:auto; margin-right:auto;">
+                     <tr><td>
+                     <table class="table" text-align="center" style="float: left" >
                 <tr>
-                    <td><th colspan="2; border=3"><h4 style="color:Green;"> Requested Appointments</h4></th></td>
-                    <td><th colspan="3"><h4 style="color:Green;"> Scheduled Appointments</h4></th></td>
-                <tr>
-
-                <tr text-align="center">
+                    <td><th colspan="4; border=3"><h4 style="color:Green;"> Requested Appointments</h4></th></td>                    
+                      </tr>
+                        <tr text-align="center">
+                
                     <?php 
                         while($rows=mysqli_fetch_assoc($result1))
                         { ?>
-                            <td><?php $_SESSION['patientProfileId1']= $rows['patientProfileId']; echo $rows['patientProfileId'];?></td>
+                        
+                            <td><?php echo $rows['patientProfileId'];?></td>
                             <td><?php echo $rows['scheduleDate'];?></td>
                             <td><?php echo $rows['scheduleTime'];?></td>
-                            <td><input type="submit" name="ViewDetails" value= "View Details" class="btn btn-info pull-right"></td>
-
-                            <?php } 
+                            <td><input type="submit" name="ViewDetails1" value= "View Details" class="btn btn-info pull-right" onclick="f1.action= 'app_req_pra.php?id1=<?php echo $rows['patientProfileId'];?>'"></td>
+                        </tr>
+                        
+                       
+                            <?php } ?>
+                            </table>    
+                     </td>
+                     <td>
+                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
+                        
+                     <td><table class="table" text-align="center" style="float: right" >
+                        <tr><td><th colspan="4"><h4 style="color:Green;"> Scheduled Appointments</h4></th></td></tr>
+                        <?php
                             
                      while($rows=mysqli_fetch_assoc($result2))
                      { ?>
-                            <td><?php $_SESSION['patientProfileId2']= $rows['patientProfileId']; echo $rows['patientProfileId'];?></td>
+                     
+                     <tr>
+                            <td><?php echo $rows['patientProfileId'];?></td>
                             <td><?php echo $rows['scheduleDate'];?></td>
                             <td><?php echo $rows['scheduleTime'];?></td>
-                            <td><input type="submit" name="ViewDetails" value= "View Details" class="btn btn-info pull-right" onclick="f1.action = 'app_details_pra.php'"></td>
+                            <td><input type="submit" name="ViewDetails2" value= "View Details" class="btn btn-info pull-right" onclick="f1.action= 'app_details_pra.php?id2=<?php echo $rows['patientProfileId']; ?>'"></td>
                     <?php 
                 } ?>
                         </tr>
-            </table>
-            </form>
+
+            </tr>  
+            </table></td></tr>
+                      </table>
+            
+
+                            
+
+            <input type="submit" name="SetApp" value= "Set Appointment" class="btn btn-info pull-center" onclick="f1.action = 'set_app_pra.php'">
+            </br></br></br>    
+        </form>
+            
           </div>
         </div>
       </div>

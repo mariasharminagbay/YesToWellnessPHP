@@ -12,7 +12,7 @@ include_once('functions.php');
        
        $id2 = $id1 = $_GET['id2'];
       // echo $id2;
-      $query2= "SELECT * FROM tblappointmentrequests WHERE patientProfileId =$id2 and sessionStatusId=2";
+      $query2= "SELECT * FROM tblappointmentrequests WHERE appointmentRequestID =$id2 and sessionStatusId=2";
 
      
      $result2=mysqli_query($con,$query2);

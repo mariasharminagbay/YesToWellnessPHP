@@ -12,7 +12,7 @@ include_once('functions.php');
       //  $id1 = $_SESSION['patientProfileId1'];
       $id1 = $_GET['id1'];
       //  echo $id1;
-      $query1= "SELECT * FROM tblappointmentrequests where patientProfileId =$id1 and sessionStatusId=1";      
+      $query1= "SELECT * FROM tblappointmentrequests where appointmentRequestID  =$id1 and sessionStatusId=1";      
 
      $result1=mysqli_query($con,$query1);      
       
@@ -22,11 +22,11 @@ include_once('functions.php');
        
     //  $rows=mysqli_fetch_assoc($result1);
     //  $id1 = $_SESSION['patientProfileId1'];
-    $id1 = $_GET['id1'];
+    // $id1 = $_GET['id1'];
      
-    $query2= "UPDATE tblappointmentrequests SET sessionStatusId=2 WHERE patientProfileId =$id1";      
+    $query2= "UPDATE tblappointmentrequests SET sessionStatusId=2, notes='Appointment Approved.' WHERE appointmentRequestID  =$id1";      
 
-   $result1=mysqli_query($con,$query2);  
+   $result2=mysqli_query($con,$query2);  
 
    
 
@@ -39,12 +39,12 @@ if ($con->query($query2) === TRUE) {
     
  }
  if (isset($_POST['Decline'])){
-  $id1 = $_GET['id1'];
+  // $id1 = $_GET['id1'];
        
   // $rows=mysqli_fetch_assoc($result1);
   //  $id1 = $_SESSION['patientProfileId1'];
    
-  $query3= "UPDATE tblappointmentrequests SET sessionStatusId=3, notes='Appointment Cancelled.' WHERE patientProfileId =$id1";      
+  $query3= "UPDATE tblappointmentrequests SET sessionStatusId=3, notes='Appointment Cancelled.' WHERE appointmentRequestID  =$id1";      
 
  $result3=mysqli_query($con,$query3);  
  
@@ -147,16 +147,16 @@ if ($con->query($query2) === TRUE) {
                            <tr> <td><?php echo $rows['appointmentRequestID'];?></td></tr>
                            <tr> <td><?php echo $rows['virtualRoom'];?></td></tr>
                            <tr><td><?php echo $rows['notes'];?></td></tr>
-                                                    
-
+                           </br></br>                
+                            <tr><td>
+            <input type="submit" name="Approve" value= "Approve" style="margin-left:auto; margin-right:auto;" onclick="f1.action = 'appointments_practitioners.php'" >
+                       <input type="submit" name="Decline" value= "Decline" style="margin-left:auto; margin-right:auto;" onclick="f1.action = 'appointments_practitioners.php'" ></td></tr>
+                          </br></br></br>  
                           <?php }                                                      
                      ?>
                         
             </table>
-                        </br></br>
-            <input type="submit" name="Approve" value= "Approve" class="btn btn-info pull-center" >
-                        <input type="submit" name="Decline" value= "Decline" class="btn btn-info pull-center" >
-                          </br></br></br>  
+                        
             
                         </form>
           </div>

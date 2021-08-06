@@ -9,6 +9,8 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
      $result2=mysqli_query($con,$query2); 
     // session_start();
 
+    
+
 ?>
 
 <!DOCTYPE html>
@@ -105,11 +107,11 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
                     <?php 
                         while($rows=mysqli_fetch_assoc($result1))
                         { ?>
-                        
+                            <td><?php echo $rows['appointmentRequestID'];?></td>
                             <td><?php echo $rows['patientProfileId'];?></td>
                             <td><?php echo $rows['scheduleDate'];?></td>
                             <td><?php echo $rows['scheduleTime'];?></td>
-                            <td><input type="submit" name="ViewDetails1" value= "View Details" class="btn btn-info pull-right" onclick="f1.action= 'app_req_pra.php?id1=<?php echo $rows['patientProfileId'];?>'"></td>
+                            <td><input type="submit" name="ViewDetails1" value= "View Details" class="btn btn-info pull-right" onclick="f1.action= 'app_req_pra.php?id1=<?php echo $rows['appointmentRequestID'];?>'"></td>
                         </tr>
                         
                        
@@ -127,10 +129,11 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
                      { ?>
                      
                      <tr>
+                     <td><?php echo $rows['appointmentRequestID'];?></td>
                             <td><?php echo $rows['patientProfileId'];?></td>
                             <td><?php echo $rows['scheduleDate'];?></td>
                             <td><?php echo $rows['scheduleTime'];?></td>
-                            <td><input type="submit" name="ViewDetails2" value= "View Details" class="btn btn-info pull-right" onclick="f1.action= 'app_details_pra.php?id2=<?php echo $rows['patientProfileId']; ?>'"></td>
+                            <td><input type="submit" name="ViewDetails2" value= "View Details" class="btn btn-info pull-right" onclick="f1.action= 'app_details_pra.php?id2=<?php echo $rows['appointmentRequestID']; ?>'"></td>
                     <?php 
                 } ?>
                         </tr>

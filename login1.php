@@ -31,6 +31,21 @@ if (isset($_POST['submit']))
       $_SESSION['user_name'] = $user_name;
       $_SESSION['customerType']=$customerType;
       $_SESSION['customerID']=$userid;
+
+      //will get the profileID first:
+      if($customerType==1){
+        $getpatientBackgroundId = mysqli_query($con, "SELECT `patientBackgroundId` FROM `tblpatientbackground`  WHERE `customerId`=$userid");
+        $retrievepatientBackgroundId = mysqli_fetch_assoc($getpatientBackgroundId);
+
+        $_SESSION['patientBackgroundId']=$retrievepatientBackgroundId['patientBackgroundId'];
+     
+      } else{
+        $getpractitionerProfileId = mysqli_query($con, "SELECT `practionerProfileId` FROM `tblpractitionerprofile`  WHERE `customerId`=$userid");
+        $retrievepractitionerProfileId = mysqli_fetch_assoc($getpractitionerProfileId);
+
+        $_SESSION['patientBackgroundId']=$retrievepractitionerProfileId['practionerProfileId'];
+        
+      }
       echo $_SESSION['email'];
       header("location: index.php");
     }else 

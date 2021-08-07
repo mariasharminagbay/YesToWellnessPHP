@@ -11,24 +11,38 @@ if (session_id() == "")
     //echo $customerID;
     $customerType = $_SESSION['customerType'];
     $error="";
-    echo '<script>alert("before")</script>';
-        if (isset($_POST['submit'])){
-            echo '<script>alert("POPUP")</script>';
+    /* echo '<script>alert("before")</script>';
+    echo '<script>alert("after before")</script>'; */
+    //echo "before post submit";
+
+       // if (isset($_POST['submit'])){
+          //echo "after post submit";
+           // ***echo '<script>alert("POPUP")</script>';
         /* $searchword = $_POST['searchword'];
         $query_searchproduct = mysqli_query($con, "SELECT `productname`, `productDescription`, `productPrice`, `productImage` FROM `products` WHERE productname LIKE '%$searchword%'");
         }
         else{ */
          //   $query_searchproduct = mysqli_query($con, "SELECT `productname`, `productDescription`, `productPrice`, `productImage` FROM `products` WHERE productname LIKE '%$searchword%'");
         //$query_searchproduct = mysqli_query($con, "SELECT `PR.practionerProfileId` as practionerProfileId, `PR.customerID` , `PR.officeLocation` , `PR.city` , `PR.province` , `PR.zip` , `PR.licenseType` , `PR.licenseNumber` , `PR.licenseCopy` , `PR.levelOfEducation` , `PR.nameOfInstitution` , `PR.profilePhoto` , `PR.affiliations` , `PR.specialties` , `PR.preferredPatientGender` FROM tblpractitionerprofile PR WHERE `PR.specialties`  LIKE (SELECT `PB.feelingToAddress` from tblpatientbackground PB where `PB.customerID` = 24)");
-        $query_searchproduct = mysqli_query($con, "SELECT * from tblpractitionerprofile");
+        //****$query_searchproduct = mysqli_query($con, "SELECT * from tblpractitionerprofile");
         //$numEmail=mysqli_num_rows($query_searchproduct);
-       // $error= "After isset. Total rows returned: " +  $numEmail;
+        //$error= "After isset. Total rows returned: " .$numEmail;
        //$numproductname = mysqli_num_rows ($query_searchproduct);
         //echo '<script>alert($numproductname)</script>';
         //$error= $numproductname;
         //echo '<script>alert(' + $numEmail+ ')</script>';
-        }
+        //}
 
+        if (isset($_GET['select'])){
+          echo '<script>alert("at post select")</script>';
+          $_SESSION['practitionerID'] = $_POST["practitionerID"];
+          $_SESSION['practitionerfirstName'] = $_POST["firstName"];
+          $_SESSION['practitionerlastName'] = $_POST["practitionerlastName"];
+          $_SESSION['practitionercity'] = $_POST["practitionerID"];
+          $_SESSION['practitionerspecialties'] = $_POST["practitionerspecialties"];
+         
+          header('location: patientBookingPage.php');
+        }
         
 
 ?>
@@ -36,6 +50,7 @@ if (session_id() == "")
 <html class="wide wow-animation" lang="en">
   <head>
     <title>Home</title>
+   
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -55,7 +70,7 @@ if (session_id() == "")
      
 </head>
   <body>
-  <?php echo $error ?>
+  
     <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <div class="preloader">
       <div class="preloader-body">
@@ -95,10 +110,8 @@ if (session_id() == "")
                       
                       <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
                       </li>
-                      
-                      <?php 
 
-                        if (session_id() == "") { ?>
+                    <?php if (session_id() == "") { ?>
                           <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
                           </li>
                       <?php } ?> 
@@ -108,7 +121,7 @@ if (session_id() == "")
                       <?php } ?> 
                       <li class="rd-nav-item"><a class="rd-nav-link">Hello   <strong style="color:green;font-size:30px;"> <?php echo $_SESSION['user_name']; ?> </strong> </a>
                    
-                    
+                     
                     </ul>
                   </div>
                 </div>
@@ -118,9 +131,16 @@ if (session_id() == "")
         </div>
       </header>
       <!--Main bunner-->
-
+      <?php 
+          $query_searchproduct = mysqli_query($con, "SELECT PR.practionerProfileId as practionerProfileId , PR.customerID as customerID, cust.firstName as firstName, cust.lastName as lastName,
+          PR.officeLocation as officeLocation , PR.city as city, PR.province as province, PR.licenseType as licenseType, 
+          PR.licenseNumber as licenseNumber,PR.specialties as specialties , PR.preferredPatientGender as preferredPatientGender FROM tblpractitionerprofile PR 
+          INNER JOIN tblcustomers cust
+          on PR.customerID = cust.customerId
+          WHERE PR.specialties  = (SELECT PB.feelingToAddress from tblpatientbackground PB where PB.customerID = 24)");
+      ?>
       <section class="fillform">
-      <?php echo $error ?>
+      
         <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
@@ -128,43 +148,38 @@ if (session_id() == "")
                 <div class="section-heading">
                     <h2>List of Available Practitioner(s)</h2>
                 </div>
-                <form id="patientMatchPractitioner" action="patientMatchPractitioner.php" method="POST" >
-                <input type="submit" id="submit" class="main-button" name="submit" value="Search Item" />
-                <?php while($row = $query_searchproduct->fetch_array()){ ?>
-                    <div class="col-md-4 col-sm-6">
-                      <div class="blog-post">
-                        <div class="blog-thumb">
-                          <!--<img src="assets/images/product-1-720x480.jpg" alt=""> -->
-                          <?php echo $row[5]; ?>
-                        </div>
-                        <div class="down-content">
-                          <span>$ <?php echo $row[2]; ?> </span>
-                          <h4> "<?php echo $row[0] ?>" </h4>
-                          <p> <?php echo $row[1] ?></p>  
-                        </div>
-                      </div>
-                    </div>
-                <?php } ?>
-
+                <form id="patientMatchPractitioner" action="" method="POST" >
                 <div class="default-table">
                     <table>
                     <thead>
                         <tr>
-                        <th>Product no.</th>
-                        <th>Description</th>
-                        <th>Price</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Location</th>
+                        <th>Specialization</th>
+                        <th colspan="2">  </th>
                         </tr>
                     </thead>
                         <tbody>
+                          <!--//fetch_array()){ -->
+                        <?php while($row = $query_searchproduct->fetch_assoc()){ ?> 
                        
+                         <tr>
+                           <td> <?php echo $row['firstName']; ?> </td>
+                           <td> <?php echo $row['lastName']; ?> </td>
+                           <td> <?php echo $row['city']; ?> </td>
+                           <td> <?php echo $row['specialties']; ?> </td>
+                           <td>
+                             <a href="patientMatchPractitioner.php?select=<?php echo $row['firstName']; ?>"
+                                class="btn btn-info"> Select </a>
+                        </tr>
+                      <?php } ?>
                         
                         </tbody>
                     </table>
-
-                
                 </div>
                
-                </form>        
+                </form>          
               </div>
             </div>
         </div>   
@@ -172,7 +187,7 @@ if (session_id() == "")
           <p><br></p>
           <div class="col-md-4">
             <div class="filled-rounded-button">
-              <a href="patientBookingPage.php">Request for Appointment</a>
+              <a href="patientBookingPage.php">Select Counselor</a>
             </div>
           </div>
         </div>

@@ -14,6 +14,9 @@ if (session_id() == "")
     //echo $customerID;
     $customerType = $_SESSION['customerType'];
 
+    //will get all the list from 
+    
+
 ?>
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
@@ -100,62 +103,106 @@ if (session_id() == "")
         </div>
       </header>
       <!--Main bunner-->
-
+      <?php 
+          $query_pendingAppointment = mysqli_query($con, "SELECT a.appointmentSessionId as appointmentSessionId, a.practionerProfileId as practionerProfileId, a.patientBackgroundId as patientBackgroundId, 
+            a.scheduleDateTime as scheduleDateTime,  c.firstName as firstName, c.lastName as lastName
+          FROM tblappointmentsessions a
+          INNER JOIN tblpatientbackground B on a.patientBackgroundId = b.patientBackgroundId
+          INNER JOIN tblcustomers c on b.customerID = c.customerId 
+          where b.customerID =  $customerID and a.sessionStatusId = 2");
+      ?>
     <section class="fillform">
         <div class="container-fluid">
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-8">
                   <br>
                 <div class="section-heading">
-                    <h2>List of Appointments</h2>
+                    <h2>List of Scheduled Appointments</h2>
                 </div>
                 <div class="default-table">
                     <table>
                     <thead>
                         <tr>
-                        <th>Product no.</th>
-                        <th>Description</th>
-                        <th>Price</th>
+                        <th>Date and Time </th>
+                        <th>Counselor's Name</th>
+                        <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        
+                        <?php while($row = $query_pendingAppointment->fetch_assoc()){ ?> 
+                        
                         <tr>
-                        <td>#1011</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>$20.50</td>
+                          <td> <?php echo $row['scheduleDateTime']; ?> </td>
+                          <td> <?php echo $row['firstName']; ?> </td>
+                          <td> <?php echo $row['lastName']; ?> </td>
+                          <td>
+                            <a href="patientAppointmentList.php"
+                                class="btn btn-info"> View Details </a> 
                         </tr>
-                        <tr>
-                        <td>#1012</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>$20.50</td>
-                        </tr>
-                        <tr>
-                        <td>#1013</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>$20.50</td>
-                        </tr>
-                        <tr>
-                        <td>#1014</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>$20.50</td>
-                        </tr>
-                        <tr>
-                        <td>#1015</td>
-                        <td>Lorem ipsum dolor sit amet</td>
-                        <td>$20.50</td>
-                        </tr>
+                      <?php } ?>
                     </tbody>
                     </table>
-                    <ul class="table-pagination">
-                    <li><a href="#">Previous</a></li>
-                    <li><a href="#">1</a></li>
-                    <li class="active"><a href="#">2</a></li>
-                    <li><a href="#">...</a></li>
-                    <li><a href="#">8</a></li>
-                    <li><a href="#">9</a></li>
-                    <li><a href="#">Next</a></li>
-                    </ul>
-                
+               
+                </div>
+                     
+              </div>
+            </div>
+        </div>                     
+    </section>
+
+    <?php 
+          $query_pendingApproval = mysqli_query($con, "SELECT a.appointmentRequestID as appointmentRequestID, 
+            a.patientBackgroundId as patientBackgroundId, a.scheduleDate as scheduleDate, 
+            a.scheduleTime as scheduleTime, a.practionerProfileId as practionerProfileId, 
+            a.paymentMethod as paymentMethod, a.insuranceCompanyId as insuranceCompanyId, 
+            a.insurancePolicyNumber as insurancePolicyNumber, a.notes as notes, 
+            a.primaryConcern as primaryConcern, a.virtualRoom as virtualRoom, a.isPatientRequest as isPatientRequest
+            ,c.firstName as firstName, c.lastName as lastName
+          FROM tblappointmentrequests a
+          INNER JOIN tblpatientbackground B
+          INNER JOIN tblcustomers c on b.customerID = c.customerId
+          on a.patientBackgroundId = b.patientBackgroundId
+          where b.customerID = $customerID and isApproved = 0");
+      ?>
+    <section class="fillform">
+        <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8">
+                  <br>
+                <div class="section-heading">
+                    <h2>List of Pending Requests</h2>
+                </div>
+                <div class="default-table">
+                    <table>
+                    <thead>
+                        <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Counselor's Name</th>
+                        <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <?php while($row = $query_pendingApproval->fetch_assoc()){ ?> 
+                        
+                          <tr>
+                          <td> <?php echo $row['scheduleDate']; ?> </td>
+                          <td> <?php echo $row['scheduleTime']; ?> </td>
+                          <td> <?php echo $row['firstName']; ?> </td>
+                          <td> <?php echo $row['lastName']; ?> </td>
+                          <td>
+                            <a href="patientAppointmentList.php"
+                                class="btn btn-info"> Approve </a> 
+                              <a href="patientAppointmentList.php"
+                                class="btn btn-info"> Decline </a> 
+                        </tr>
+                      <?php } ?>
+                    </tbody>
+                    </table>
+               
                 </div>
                      
               </div>

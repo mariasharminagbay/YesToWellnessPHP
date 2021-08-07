@@ -4,14 +4,93 @@ if (session_id() == "")
     session_start(); 
 
     include("connect.php");
+    $nameofCOunselor="";
+    $locationCounselor="";
+    $licenseType="";
+    $practionerProfileId="";
+    $specialty="";
 
     $error="";
     
     $customerID = $_SESSION['customerID'];
     //echo $customerID;
     $customerType = $_SESSION['customerType'];
+    $patientBackgroundId = $_SESSION['patientBackgroundId'];
+    
+
+    if (isset($_GET['select'])){
+      echo '<script>alert("at post select")</script>';
+      /* $_SESSION['practitionerID'] = $_POST["practitionerID"];
+      $_SESSION['practitionerfirstName'] = $_POST["firstName"];
+      $_SESSION['practitionerlastName'] = $_POST["practitionerlastName"];
+      $_SESSION['practitionercity'] = $_POST["practitionerID"];
+      $_SESSION['practitionerspecialties'] = $_POST["practitionerspecialties"]; */
+     
+      
+      $practitionerID = $_GET['select'];
+      $_SESSION['practitionerfirstName'] =$practitionerID;
+      $result = mysqli_query($con, "SELECT PR.practionerProfileId as practionerProfileId , PR.customerID as customerID, cust.firstName as firstName, cust.lastName as lastName,
+                          PR.officeLocation as officeLocation , PR.city as city, PR.province as province, PR.licenseType as licenseType, 
+                          PR.licenseNumber as licenseNumber,PR.specialties as specialties , PR.preferredPatientGender as preferredPatientGender 
+                          FROM tblpractitionerprofile PR 
+                          INNER JOIN tblcustomers cust
+                          on PR.customerID = cust.customerId
+                          where practionerProfileId= '$practitionerID'");
+      $numpresult = mysqli_num_rows ($result);
+      if($numpresult > 0) {
+        $row = $result->fetch_array();
+        $nameofCOunselor= $row['firstName']." ".$row['lastName'];
+        $locationCounselor=$row['city'];
+        $licenseType=$row['licenseType'];
+        $practionerProfileId = $row['practionerProfileId'];
+        $specialty=$row['specialties'];
+         /*  $_SESSION['practitionerfirstName'] = $_POST["firstName"];
+          $_SESSION['practitionerlastName'] = $_POST["practitionerlastName"];
+          $_SESSION['practitionercity'] = $_POST["practitionerID"];
+          $_SESSION['practitionerspecialties'] = $_POST["practitionerspecialties"]; */
+          
+
+      }
+      //header('location: patientBookingPage.php');
+      $_SESSION['practionerProfileId'] = $practionerProfileId;
+      $_SESSION['specialty'] = $specialty;
+    }
+
+    if (isset($_POST['submit'])){
+      echo '<script>alert("at post save")</script>';
+      $scheduleDate=$_POST['date'];
+      $scheduleTime=$_POST['time'];
+      $insurancePolicyNumber = $_POST['insuranceNumber'];
+      $notes=$_POST['notes'];
+
+      
+
+      $practionerProfileId =$_SESSION['practionerProfileId'];
+      $specialty = $_SESSION['specialty'];
+      
+      $error=$scheduleDate. " " . $scheduleTime. "> prID: ". $practionerProfileId. ">>custID:".$customerID;
+
+      $insertQuery = "INSERT INTO `tblappointmentrequests`(`patientBackgroundId`, `scheduleDate`, `scheduleTime`, 
+          `practionerProfileId`, `paymentMethod`, `insuranceCompanyId`, `insurancePolicyNumber`, `notes`, 
+          `primaryConcern`, `virtualRoom`, `isPatientRequest`, `isApproved`) 
+          VALUES ($patientBackgroundId, '$scheduleDate','$scheduleTime',$practionerProfileId,'VISA',1,
+          '$insurancePolicyNumber','$notes','$specialty','',1,0)";
+
+      if (mysqli_query($con,$insertQuery))
+            {
+                //$error = "CHAIR has been added";
+                echo '<script>alert("Item has been added")</script>';
+                header('location: patientAppointmentList.php');
+            }
+            else {
+                echo '<script>alert("Error occured whitle adding item.")</script>';
+            }
+    }
+    
 
 ?>
+
+
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="en">
   <head>
@@ -34,7 +113,7 @@ if (session_id() == "")
      
 </head>
   <body>
-
+    <?php echo $error; ?>
     <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
     <div class="preloader">
       <div class="preloader-body">
@@ -101,36 +180,59 @@ if (session_id() == "")
     <section class="fillform">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
                     <br>
                     <div class="section-heading">
-                        <h2>Request for Appointment</h2>
-                    </div>
-                    <div>
-                        <form action="" method="POST">
+                            <h2>Request for Appointment</h2>
+                        </div>
+                    <div class="row justify-content-center">
+                        
+                        <br>
+                        <div><p><br></p></div>
+                        <form id="patientBookingPage" action="patientBookingPage.php" method="POST" >
                             <div class="form-group">
-                                <label>Select Date:</label>
-                                <input type="date" name="date" min="<?= date('Y-m-d'); ?>">
+                                <label>Select Date: </label>
+                                <input type="date" name="date" min="<?= date('Y-m-d'); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label>Select Time:</label>
-                                <input type="time" name="time">
+                                <input type="time" name="time" required>
                                 
                             </div>
                             <div class="form-group">
+                                <label>Insurance Company Name:  </label>
+                                <input type="text" name="insuranceCompName" id="insuranceCompName" required>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label>Insurance Policy Number:  </label>
+                                <input type="text" name="insuranceNumber" id="insuranceNumber" required>
+                                
+                            </div>
+
+                            <div class="form-group">
                                 <label>Name of Counselor</label>
-                                <input type="text" name="nameCounselor" id="nameCounselor" disabled>
+                                <input type="text" name="nameCounselor" id="nameCounselor" 
+                                    value="<?php echo $nameofCOunselor; ?> " placeholder=" " disabled>
                             </div>
                             <div class="form-group">
                                 <label>Location of Counselor</label>
-                                <input type="text" name="locationCounselor" id="locationCounselor" disabled>
+                                <input type="text" name="locationCounselor" id="locationCounselor" 
+                                  value="<?php echo $locationCounselor; ?> " placeholder=" " disabled> 
                             </div>
                             <div class="form-group">
                                 <label>License Type of Counselor</label>
-                                <input type="text" name="licenseTypeCounselor" id="licenseTypeCounselor" disabled>
+                                <input type="text" name="licenseTypeCounselor" id="licenseTypeCounselor" 
+                                value="<?php echo $licenseType; ?> " placeholder=" " disabled>
                             </div>
                             <div class="form-group">
-                                <buttom type="submit" name="save">Save</button>
+                                <label>Message: </label><br/>
+                                <textarea name="notes" rows="6" id="notes" placeholder="Your Message" required=""></textarea>
+                            </div>
+                            <div class="form-group">
+                              <br>
+                               <!--  <buttom type="submit" name="submit" class="btn btn-primary">Request</button> -->
+                               <input type="submit" id="form-submit" class="main-button" name="submit">
                             </div>
                         </form>
                     </div>
@@ -138,18 +240,81 @@ if (session_id() == "")
                 </div> 
             </div>          
         </div>   
-        <div class="col-md-6 col-sm-12">
+        <!-- <div class="col-md-6 col-sm-12">
           <p><br></p>
           <div class="col-md-4">
             <div class="filled-rounded-button">
               <a href="patientMatchPractitioner.php">Get matched to Therapist</a>
             </div>
           </div>
-        </div>
+        </div> -->
         <div>
-
                      
     </section>
+    <?php 
+          $query_searchproduct = mysqli_query($con, "SELECT PR.practionerProfileId as practionerProfileId , PR.customerID as customerID, cust.firstName as firstName, cust.lastName as lastName,
+          PR.officeLocation as officeLocation , PR.city as city, PR.province as province, PR.licenseType as licenseType, 
+          PR.licenseNumber as licenseNumber,PR.specialties as specialties , PR.preferredPatientGender as preferredPatientGender FROM tblpractitionerprofile PR 
+          INNER JOIN tblcustomers cust
+          on PR.customerID = cust.customerId
+          WHERE PR.specialties  = (SELECT PB.feelingToAddress from tblpatientbackground PB where PB.customerID = $customerID)");
+      ?>
+    <section class="fillform">
+      
+      <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+                <br>
+              <div class="section-heading">
+                  <h2>Choose from the List of Available Practitioner(s)</h2>
+              </div>
+              <form id="patientBookingPage" action="patientBookingPage.php" method="POST" >
+              <div class="default-table">
+                  <table>
+                  <thead>
+                      <tr>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Location</th>
+                      <th>Specialization</th>
+                      <th colspan="2">  </th>
+                      </tr>
+                  </thead>
+                      <tbody>
+                        <!--//fetch_array()){ -->
+                      <?php while($row = $query_searchproduct->fetch_assoc()){ ?> 
+                     
+                       <tr>
+                         <td> <?php echo $row['firstName']; ?> </td>
+                         <td> <?php echo $row['lastName']; ?> </td>
+                         <td> <?php echo $row['city']; ?> </td>
+                         <td> <?php echo $row['specialties']; ?> </td>
+                         <td>
+                           <a href="patientBookingPage.php?select=<?php echo $row['practionerProfileId']; ?>"
+                              class="btn btn-info"> Select </a>
+                      </tr>
+                    <?php } ?>
+                      
+                      </tbody>
+                  </table>
+              </div>
+             
+              </form>          
+            </div>
+          </div>
+      </div>   
+      <!-- <div class="col-md-6 col-sm-12">
+        <p><br></p>
+        <div class="col-md-4">
+          <div class="filled-rounded-button">
+            <a href="patientBookingPage.php">Select Counselor</a>
+          </div>
+        </div>
+      </div> -->
+      <div>
+
+                   
+  </section>
       <!--Testimonials-->
        <footer class="section footer-classic context-dark">
         <div class="container wide">

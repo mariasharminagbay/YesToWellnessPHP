@@ -10,7 +10,7 @@ include_once('functions.php');
        
       // $rows=mysqli_fetch_assoc($result1);
        
-       $id2 = $id1 = $_GET['id2'];
+       $id2 = $_GET['id2'];
       // echo $id2;
       $query2= "SELECT * FROM tblappointmentrequests WHERE appointmentRequestID =$id2 and sessionStatusId=2";
 

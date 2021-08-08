@@ -6,13 +6,13 @@ if (session_id() == "")
     session_start(); 
 
 $_SESSION['customerType'] = 2;
-echo "Email Address is: " .$_SESSION['email'];
+/* echo "Email Address is: " .$_SESSION['email'];
 
 
 echo "Customer type is: " .$_SESSION['customerType'];
 
 echo "UserName is: " .$_SESSION['user_name'];
-echo "CustomerID is: " .$_SESSION['customerID'];
+echo "CustomerID is: " .$_SESSION['customerID']; */
 
 $email = $_SESSION['email'];
 $customerID = $_SESSION['customerID'];

@@ -14,9 +14,9 @@ if (session_id() == "")
 
 
 //echo "Email Address is: " .$_SESSION['email'];
-/* echo "Customer type is: " .$_SESSION['customerType'];
+echo "Customer type is: " .$_SESSION['customerType'];
 echo "UserName is: " .$_SESSION['user_name'];
-echo "CustomerID is: " .$_SESSION['customerID']; */
+echo "CustomerID is: " .$_SESSION['customerID'];
 
 
 if (isset($_POST['submit'])){
@@ -130,30 +130,19 @@ if (isset($_POST['submit'])){
         </div>
       </header>
       <!--Main bunner-->
-      <section class="section-lg bg-secondary" style="background-image:url(&quot;images/wellness05.png&quot;);background-repeat: no-repeat; background-size: cover;">
-        <div class="container wide">
-          <div class="text-center">
-            <h1>Patient's Profile</h1>
-           
-          </div>
-        </div>
-      </section>
-      <section class="fillform" style='background-color:#DEE6F3'>
-      <div class='container' style='margin-left:50px;margin-right:50px;'>
-        <div class='col-md-12' style='padding-left:100px;padding-right:100px;'> 
-        <br>  	
+
+      <section class="fillform">
           <br>
           <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Let us get to know you more:</h4>
           <br><br>
          <form id="patientProfile" action="patientProfile.php" method="POST" enctype="multipart/form-data">
-         <div class="form-group row align-items-center">
-         <div class="form-group col-md-3">
+         <div class="form-group">
             <label for="age">How old are you? </label>
-            <input type="text" class="form-group " id="age" name="age" placeholder="Enter age">
+            <input type="text" class="form-group col-md-3" id="age" name="age" placeholder="Enter age">
           </div>
-          <div class="form-group col-md-3">
+          <div class="form-group">
             <label for="relationshipstatus">Relationship Status</label>
-            <select class="form-group " id="relationshipstatus" style="width:30%">
+            <select class="form-group col-md-3" id="relationshipstatus" style="width:30%">
               <option value="Married"> Married</option>
               <option value="Single"> Single</option>
               <option value="Divorced"> Divorced</option>
@@ -161,17 +150,16 @@ if (isset($_POST['submit'])){
               <option value="Complicated"> Complicated</option>
             </select>
           </div>
-          <div class="form-group col-md-5">
+          <div class="form-group">
             <label for="isReligous">Do you consider yourself religious? </label>
-            <select class="form-group " id="isReligous" style="width:10%">
+            <select class="form-group col-md-3" id="isReligous" style="width:30%">
               <option value="Married"> Yes</option>
               <option value="Single"> No</option>
               
             </select>
           </div> 
-          <div class="form-group col-md-6">
-              <fieldset>   
-                   
+          <div class="form-group col-md-4">
+              <fieldset>      
                   <legend>How do feel and want to adress?</legend>      
                   <input type="radio" name="specialties" value="Stress"> Stress<br>      
                   <input type="radio" name="specialties" value="Anxiety"> Anxiety<br>      
@@ -183,9 +171,9 @@ if (isset($_POST['submit'])){
                       
               </fieldset> 
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
                 <fieldset>      
-                    <legend>Preferred way of communication? </legend>      
+                    <legend>Preferred way of communication? (You can choose all.)</legend>      
                     <input type="radio" name="wayCommunication" value="Personal"> Personal<br>      
                     <input type="radio" name="wayCommunication" value="Phone"> Phone<br>      
                     <input type="radio" name="wayCommunication" value="Video"> Video<br>   
@@ -193,18 +181,17 @@ if (isset($_POST['submit'])){
                 </fieldset> 
             </div>
             
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-5">
               <fieldset>      
-                  <legend>Preferred gender of your therapist? </legend>      
+                  <legend>Preferred gender of your therapist? (You can choose all.)</legend>      
                   <input type="radio" name="genders" value="Male"> Male<br>      
                   <input type="radio" name="genders" value="Female"> Female<br>      
                   <input type="radio" name="genders" value="LGBTQ"> LGBTQ<br>   
                   <br>              
               </fieldset> 
           </div>
-          <div class="form-group col-md-6">
-              
-              <legend>Tell us  more about yourself... </legend>
+          <div class="form-group col-md-4">
+              <label for="aboutme">Tell us  more about yourself...</label>
               <fieldset>
                   <textarea class="form-control" id="aboutme" name="aboutme" rows="4" cols="50" placeholder="Tell us something about yourself..."></textarea>
               </fieldset>
@@ -219,7 +206,7 @@ if (isset($_POST['submit'])){
             </form>
             
         </div>
-      </div>               
+                     
     </section>
       <!--Testimonials-->
        <footer class="section footer-classic context-dark">

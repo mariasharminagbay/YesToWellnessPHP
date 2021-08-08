@@ -51,57 +51,9 @@ if (session_id() == "")
       </div>
     </div>
     <div class="page">
-      <header class="section page-header">
-        <!--RD Navbar-->
-        <div class="rd-navbar-wrap">
-          <nav class="rd-navbar rd-navbar-classic" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-static" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-lg-stick-up-offset="46px" data-xl-stick-up-offset="46px" data-xxl-stick-up-offset="46px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
-            <div class="rd-navbar-main-outer">
-              <div class="rd-navbar-main">
-                <!--RD Navbar Panel-->
-                <div class="rd-navbar-panel">
-                  <!--RD Navbar Toggle-->
-                  <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
-                  <!--RD Navbar Brand-->
-                  <div class="rd-navbar-brand">
-                    <!--Brand--><a class="brand" href="index.html"><img class="brand-logo-dark" src="images/YTWlogo.png" alt="" width="214" height="56"/><img class="brand-logo-light" src="images/logo-inverse-430x112.png" alt="" width="215" height="56"/></a>
-                  </div>
-                </div>
-                <div class="rd-navbar-main-element">
-                  <div class="rd-navbar-nav-wrap">
-                    <ul class="rd-navbar-nav">
-                      <li class="rd-nav-item active"><a class="rd-nav-link" href="index.php">Home</a>
-                      </li>
-                      
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.php">About</a>
-                      </li>
-
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="faq.php">FAQ</a>
-                      </li>
-                      
-                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
-                      </li>
-                      
-                      <?php 
-
-                        if (session_id() == "") { ?>
-                          <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
-                          </li>
-                      <?php } ?> 
-                      <?php if (session_id() != "") { ?>
-                          <li class="rd-nav-item"><a class="rd-nav-link" href="logout.php">Logout</a>
-                          </li>
-                      <?php } ?> 
-                      <li class="rd-nav-item"><a class="rd-nav-link">Hello   <strong style="color:green;font-size:30px;"> <?php echo $_SESSION['user_name']; ?> </strong> </a>
-                   
-                    
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </header>
+    <?php
+	  include('header.php')
+	  ?>
       <!--Main bunner-->
       <?php 
           $query_pendingAppointment = mysqli_query($con, "SELECT a.appointmentSessionId as appointmentSessionId, a.practionerProfileId as practionerProfileId, a.patientBackgroundId as patientBackgroundId, 
@@ -111,10 +63,11 @@ if (session_id() == "")
           INNER JOIN tblcustomers c on b.customerID = c.customerId 
           where b.customerID =  $customerID and a.sessionStatusId = 2");
       ?>
-    <section class="fillform">
-        <div class="container-fluid">
+    <section class="fillform" style='background-color:#DEE6F3'>
+      <div class="container">
+        <div class="form-group row align-items-center">
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-16">
                   <br>
                 <div class="section-heading">
                     <h2>List of Scheduled Appointments</h2>
@@ -138,7 +91,9 @@ if (session_id() == "")
                           <td> <?php echo $row['lastName']; ?> </td>
                           <td>
                             <a href="patientAppointmentList.php"
-                                class="btn btn-info"> View Details </a> 
+                                class="btn btn-info"> View Details </a>
+                            <a href="patientAppointmentList.php"
+                                class="btn btn-info"> Cancel Appointment </a> 
                         </tr>
                       <?php } ?>
                     </tbody>
@@ -165,10 +120,11 @@ if (session_id() == "")
           on a.patientBackgroundId = b.patientBackgroundId
           where b.customerID = $customerID and isApproved = 0");
       ?>
-    <section class="fillform">
-        <div class="container-fluid">
+    <section class="fillform" style='background-color:#DEE6F3'>
+        <div class="container">
+          <div class="form-group row align-items-center">
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-16">
                   <br>
                 <div class="section-heading">
                     <h2>List of Pending Requests</h2>
@@ -181,6 +137,10 @@ if (session_id() == "")
                         <th>Time</th>
                         <th>Counselor's Name</th>
                         <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        
 
                         </tr>
                     </thead>
@@ -195,9 +155,10 @@ if (session_id() == "")
                           <td> <?php echo $row['lastName']; ?> </td>
                           <td>
                             <a href="patientAppointmentList.php"
-                                class="btn btn-info"> Approve </a> 
+                                class="btn btn-info"> Approve </a> </td>
+                          <td>
                               <a href="patientAppointmentList.php"
-                                class="btn btn-info"> Decline </a> 
+                                class="btn btn-info"> Decline </a> </td>
                         </tr>
                       <?php } ?>
                     </tbody>
@@ -208,13 +169,14 @@ if (session_id() == "")
               </div>
             </div>
         </div>   
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-6 col-sm-16">
           <p><br></p>
-          <div class="col-md-4">
+          <div class="col-md-10">
             <div class="filled-rounded-button">
               <a href="patientBookingPage.php">Request for Appointment</a>
             </div>
           </div>
+        </div>
         </div>
         <div>
 

@@ -52,10 +52,6 @@ if (isset($_POST['submit'])){
                 echo '<script>alert("Error occured whitle adding item.")</script>';
             }
 
-    //} else{
-        //will ask the user to check one of the check boxes
-    //    echo '<script>alert("Kindly choose license type.")</script>';
-    //}
 }
 
 ?>
@@ -125,28 +121,38 @@ if (isset($_POST['submit'])){
         </div>
       </header>
       <!--Main bunner-->
+      <section class="section-lg bg-secondary" style="background-image:url('about.jpg');background-repeat: no-repeat; background-size: cover;"">
+        <div class="container wide">
+          <div class="text-center">
+            <h1>Practitioner Profile</h1>
+           
+          </div>
+        </div>
+      </section>
+      <section class="fillform" style='background-color:#DEE6F3'>
 
-      <section class="fillform">
-                      <br>
+      <div class='container' style='margin-left:50px;margin-right:50px;'>
+        <div class='col-md-12' style='padding-left:100px;padding-right:100px;'>
+                <br>      <br>
                       <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Fill the form:</h4>
-                      <br><br>
+                      <br>
          <form id="practitionerProfile2" action="practitionerProfile2.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group row align-items-center">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="inputAddress">Address</label>
                         <input name="inputAddress" id="inputAddress" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="inputAddress2">Address 2</label>
                         <input name="inputAddress2" id="inputAddress2" type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
                     </div>
                 </div>
                     <div class="form-row align-items-center">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label for="inputCity">City</label>
                             <input name="inputCity" id="inputCity" type="text" class="form-control" id="inputCity">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                                 <label for="inputState">State</label>
                                 <input name="inputState" id="inputState" type="text" class="form-control" id="inputState">
                                 <!-- <select id="inputState" class="form-control">
@@ -154,12 +160,12 @@ if (isset($_POST['submit'])){
                                     <option>...</option>
                                 </select> -->
                         </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-4">
                             <label for="inputZip">Zip</label>
                             <input name="inputZip" id="inputZip" type="text" class="form-control" id="inputZip">
                             </div>
-                    </div>
-                <div class="form-group col-md-4">
+                    
+                <div class="form-group col-md-6">
                     <fieldset>      
                         <legend>What are your other Specialties?</legend>      
                         <input type="radio" name="specialties" value="Stress"> Stress<br>      
@@ -172,69 +178,72 @@ if (isset($_POST['submit'])){
                             
                     </fieldset> 
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <fieldset>      
-                        <legend>Preferred gender of your therapist? (You can choose all.)</legend>      
+                        <legend>Preferred gender of your therapist? </legend>      
                         <input type="radio" name="genders" value="Stress"> Male<br>      
                         <input type="radio" name="genders" value="Anxiety"> Female<br>      
                         <input type="radio" name="genders" value="Depression"> LGBTQ<br>   
                         <br>              
                     </fieldset> 
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-12">
                     <label for="aboutme">About Me</label>
                     <fieldset>
                         <textarea class="form-control" id="aboutme" name="aboutme" rows="4" cols="50" placeholder="Tell us something about yourself..."></textarea>
                     </fieldset>
                 </div>
                 <br>
-                <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Education:</h4>      
-                    <br>    
-                    <div class="form-group col-md-4">
+                <div class="form-group col-md-12">
+                  <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Education:</h4>  
+                </div>    
+                      
+                    <div class="form-group col-md-6">
                         <label for="leveleEducation">Level of Education</label>
                         <input name="leveleEducation" id="leveleEducation" type="text" class="form-control" id="leveleEducation" placeholder="Bachelor, Masters">
                     </div>    
                 
-                   <div class="form-group col-md-4">
+                   <div class="form-group col-md-6">
                         <label for="nameInstitution">Name of Institution</label>
                         <input name="nameInstitution" id="nameInstitution" type="text" class="form-control" id="nameInstitution" placeholder="College, University">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                         <label for="affiliations">Affiliations</label>
                         <input name="affiliations" id="affiliations" type="text" class="form-control" id="affiliations" placeholder="Affiliations">
                     </div>
                     
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label for="licensenumber">License Number</label>
                             <input name="licensenumber" id="licensenumber" type="text" class="form-control" id="licensenumber">
                         </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label for="licensefile">Upload License</label>
                                 <fieldset>
                                     <input type="file" name="licensefile" id="licensefile"/>
                                 </fieldset>
                             </div>
                             
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-6">
                                 <label for="profilePicture">Upload Profile Picture</label>
                                 <fieldset>
                                     <input type="file" name="profilePicture" id="profilePicture"/>
                                 </fieldset>
+                               
                             </div>
-                            
-                            </div>
-                   
-                            <input type="submit" name="submit" value="Update Profile" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >
+                        </div>
+                              <input type="submit" name="submit" value="Update Profile" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >
                             
                       </br>
                 <div>
+              </div>
                     <p><br><br></p>
                       <br>
                 </div>
             </form>
             
         </div>
-                     
+      </div>    
+      </div>                
     </section>
       <!--Testimonials-->
        <footer class="section footer-classic context-dark">

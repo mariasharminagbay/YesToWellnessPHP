@@ -177,79 +177,62 @@ if (session_id() == "")
       </header>
       <!--Main bunner-->
 
-    <section class="fillform">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-4">
-                    <br>
-                    <div class="section-heading">
-                            <h2>Request for Appointment</h2>
-                        </div>
-                    <div class="row justify-content-center">
-                        
-                        <br>
-                        <div><p><br></p></div>
-                        <form id="patientBookingPage" action="patientBookingPage.php" method="POST" >
-                            <div class="form-group">
-                                <label>Select Date: </label>
-                                <input type="date" name="date" min="<?= date('Y-m-d'); ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Select Time:</label>
-                                <input type="time" name="time" required>
-                                
-                            </div>
-                            <div class="form-group">
-                                <label>Insurance Company Name:  </label>
-                                <input type="text" name="insuranceCompName" id="insuranceCompName" required>
-                                
-                            </div>
-                            <div class="form-group">
-                                <label>Insurance Policy Number:  </label>
-                                <input type="text" name="insuranceNumber" id="insuranceNumber" required>
-                                
-                            </div>
-
-                            <div class="form-group">
-                                <label>Name of Counselor</label>
-                                <input type="text" name="nameCounselor" id="nameCounselor" 
-                                    value="<?php echo $nameofCOunselor; ?> " placeholder=" " disabled>
-                            </div>
-                            <div class="form-group">
-                                <label>Location of Counselor</label>
-                                <input type="text" name="locationCounselor" id="locationCounselor" 
-                                  value="<?php echo $locationCounselor; ?> " placeholder=" " disabled> 
-                            </div>
-                            <div class="form-group">
-                                <label>License Type of Counselor</label>
-                                <input type="text" name="licenseTypeCounselor" id="licenseTypeCounselor" 
-                                value="<?php echo $licenseType; ?> " placeholder=" " disabled>
-                            </div>
-                            <div class="form-group">
-                                <label>Message: </label><br/>
-                                <textarea name="notes" rows="6" id="notes" placeholder="Your Message" required=""></textarea>
-                            </div>
-                            <div class="form-group">
-                              <br>
-                               <!--  <buttom type="submit" name="submit" class="btn btn-primary">Request</button> -->
-                               <input type="submit" id="form-submit" class="main-button" name="submit">
-                            </div>
-                        </form>
+    <section class="fillform" style='background-color:#DEE6F3'>
+      <div class='container' style='margin-left:50px;margin-right:50px;'>
+        <div class='col-md-12' style='padding-left:100px;padding-right:100px;'> 
+              <br>  <br>			 
+            <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Request for Appointment</h4>
+            <br>
+         <form id="practitionerProfile2" action="practitionerProfile2.php" method="POST" enctype="multipart/form-data">
+                <div class="form-group row align-items-center">
+                    <div class="form-group col-md-6">
+                        <label for="date">Select Date: </label>
+                        <input type="date" name="date" min="<?= date('Y-m-d'); ?>" class="form-control" required>
                     </div>
-
-                </div> 
-            </div>          
-        </div>   
-        <!-- <div class="col-md-6 col-sm-12">
-          <p><br></p>
-          <div class="col-md-4">
-            <div class="filled-rounded-button">
-              <a href="patientMatchPractitioner.php">Get matched to Therapist</a>
-            </div>
-          </div>
-        </div> -->
-        <div>
-                     
+                    <div class="form-group col-md-6">
+                        <label for="time">Select Time:</label>
+                        <input name="time" id="time" type="time"  class="form-control" required">
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <div class="form-group col-md-6">
+                        <label for="insuranceCompName">Insurance Company Name: </label>
+                        <input type="text" name="insuranceCompName" id="insuranceCompName" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="insuranceNumber">Insurance Policy Number: </label>
+                        <input name="insuranceNumber" id="insuranceNumber" type="text"  class="form-control" required>
+                    </div>
+                </div>
+                    <div class="form-row align-items-center">
+                        <div class="form-group col-md-4">
+                            <label for="nameCounselor">Name of Counselor</label>
+                            <input name="nameCounselor" id="nameCounselor" type="text" class="form-control"
+                            value="<?php echo $nameofCOunselor; ?> " placeholder=" " disabled>
+                        </div>
+                        <div class="form-group col-md-4">
+                                <label for="locationCounselor">Location of Counselor</label>
+                                <input name="locationCounselor" id="inpulocationCounselortState" type="text" class="form-control"
+                                  value="<?php echo $locationCounselor; ?> " placeholder=" " disabled>
+                        </div>
+                            <div class="form-group col-md-4">
+                            <label for="licenseTypeCounselor">License Type of Counselor</label>
+                            <input name="licenseTypeCounselor" id="licenseTypeCounselor" type="text" class="form-control"
+                              value="<?php echo $licenseType; ?> " placeholder=" " disabled>
+                            </div>
+				
+                <div class="form-group col-md-12">
+                    <label for="notes">Message:</label>
+                    <fieldset>
+                        <textarea class="form-control" id="notes" name="notes" rows="6" placeholder="Tell us something about yourself..."></textarea>
+                    </fieldset>
+                </div>
+             </div>
+                 <input type="submit" name="submit" value="Update Profile" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >                
+                </div>
+            </form>
+      </div>
+     </div>                
     </section>
     <?php 
           $query_searchproduct = mysqli_query($con, "SELECT PR.practionerProfileId as practionerProfileId , PR.customerID as customerID, cust.firstName as firstName, cust.lastName as lastName,
@@ -259,8 +242,8 @@ if (session_id() == "")
           on PR.customerID = cust.customerId
           WHERE PR.specialties  = (SELECT PB.feelingToAddress from tblpatientbackground PB where PB.customerID = $customerID)");
       ?>
-    <section class="fillform">
-      
+    <section class="fillform" style='background-color:#DEE6F3'>
+    <div class='container' style='margin-left:50px;margin-right:50px;'>
       <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
@@ -312,8 +295,7 @@ if (session_id() == "")
         </div>
       </div> -->
       <div>
-
-                   
+   </div>                
   </section>
       <!--Testimonials-->
        <footer class="section footer-classic context-dark">

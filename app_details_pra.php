@@ -3,18 +3,16 @@ include_once('connect.php');
 include_once('functions.php');
 
 
-session_start();
-
-
+// session_start();
   
      
-     if (isset($_POST['ViewDetails'])){
+     if (isset($_POST['ViewDetails2'])){
        
       // $rows=mysqli_fetch_assoc($result1);
        
-       $id2 = $_SESSION['patientProfileId2'];
-      
-      $query2= "SELECT * FROM tblappointmentrequests WHERE patientProfileId =$id2";
+       $id2 = $_GET['id2'];
+      // echo $id2;
+      $query2= "SELECT * FROM tblappointmentrequests WHERE appointmentRequestID =$id2 and sessionStatusId=2";
 
      
      $result2=mysqli_query($con,$query2);
@@ -94,13 +92,12 @@ session_start();
          
            
                
-      <div class="section section-custom">
-        <div class="container wide">
-          <div class="text-center">
-          <div class="text-center">
+     
           
+          <div class="text-center">
+          <form name="f1" action="app_req_pra.php" method="post">
           <table class="table" text-align="center" >
-              <th colspan="2; border=3"><h4 style="color:Green;"> Appointment Details</h4></th>
+              <th colspan="2; border=3"><h4 style="color:Green;"> Scheduled Appointment Details</h4></th>
 
               
                   <?php 
@@ -120,11 +117,10 @@ session_start();
                    ?>
                       
           </table>
-        
+                      </form>
         </div>
-          </div>
-        </div>
-      </div>
+         
+       
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

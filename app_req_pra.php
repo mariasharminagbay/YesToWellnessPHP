@@ -1,25 +1,60 @@
 <?php
-include_once('connect.php');
-include_once('functions.php');
+include('connect.php');
+include('functions.php');
 
 
-session_start();
-
-
+// session_start();
   
      
-     if (isset($_POST['ViewDetails'])){
+     if (isset($_POST['ViewDetails1'])){
        
       // $rows=mysqli_fetch_assoc($result1);
-       $id1 = $_SESSION['patientProfileId1'];
-       
-      $query1= "SELECT * FROM tblappointmentrequests where patientProfileId =$id1";
-      
+      //  $id1 = $_SESSION['patientProfileId1'];
+      $id1 = $_GET['id1'];
+      //  echo $id1;
+      $query1= "SELECT * FROM tblappointmentrequests where appointmentRequestID=$id1 and sessionStatusId=1";      
 
-     $result1=mysqli_query($con,$query1); 
-     
+     $result1=mysqli_query($con,$query1);      
       
    }
+
+   if (isset($_POST['Approve'])){
+       
+    //  $rows=mysqli_fetch_assoc($result1);
+    //  $id1 = $_SESSION['patientProfileId1'];
+    $id1 = $_GET['id1'];
+     
+    $query2= "UPDATE tblappointmentrequests SET sessionStatusId=2, notes='Appointment Approved.' WHERE appointmentRequestID=$id1";      
+
+   $result2=mysqli_query($con,$query2);  
+
+   
+
+if ($con->query($query2) === TRUE) {
+  echo '<script>alert("Record Updated Successfully!")</script>';
+} else {
+  echo '<script>alert("Error Updating the  record!") </script>'.$con->error;
+}  
+
+    
+ }
+ if (isset($_POST['Decline'])){
+  $id1 = $_GET['id1'];
+       
+  // $rows=mysqli_fetch_assoc($result1);
+  //  $id1 = $_SESSION['patientProfileId1'];
+   
+  $query3= "UPDATE tblappointmentrequests SET sessionStatusId=3, notes='Appointment Cancelled.' WHERE appointmentRequestID=$id1";      
+
+ $result3=mysqli_query($con,$query3);  
+ 
+ if ($con->query($query3) === TRUE) {
+  echo '<script>alert("Record Updated Successfully!")</script>';
+} else {
+  echo '<script>alert("Error Updating the  record!")</script>'. $con->error;
+}  
+  
+}
   
                              
 ?>
@@ -92,15 +127,13 @@ session_start();
             </div>
           </nav>
         </div>
-      </header>
-      
+      </header>     
                
-      <div class="section section-custom">
-        <div class="container wide">
+     
           <div class="text-center">
-          
-            <table class="table" text-align="center" >
-                <th colspan="2; border=3"><h4 style="color:Green;"> Appointment Details</h4></th>
+          <form name="f1" action="" method="post">
+            <table style="margin-left:auto; margin-right:auto;" >
+                <th colspan="1; border=3"><h4 style="color:Green;"> Appointment Request Details</h4></th>
 
                 
                     <?php 
@@ -112,18 +145,21 @@ session_start();
                            <tr> <td><?php echo $rows['appointmentRequestID'];?></td></tr>
                            <tr> <td><?php echo $rows['virtualRoom'];?></td></tr>
                            <tr><td><?php echo $rows['notes'];?></td></tr>
-                           <tr> <td></td>
-
-                          <?php } 
-
-                                                     
+                           </br></br>                
+                            
+                          <?php }                                                      
                      ?>
+                     <tr><td>
+            <input type="submit" name="Approve" value= "Approve" style="margin-left:auto; margin-right:auto;"  >
+                       <input type="submit" name="Decline" value= "Decline" style="margin-left:auto; margin-right:auto;" ></td></tr>
+                          </br></br></br>  
                         
             </table>
-          
+                        
+            
+                        </form>
           </div>
-        </div>
-      </div>
+        
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

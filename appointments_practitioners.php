@@ -92,8 +92,7 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
          
            
                
-      <div class="section section-custom">
-        <div class="container wide">
+      
           <div class="text-center">
              <form name="f1" action="app_req_pra.php" method="post">
                  <table style="margin-left:auto; margin-right:auto;">
@@ -150,8 +149,7 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
         </form>
             
           </div>
-        </div>
-      </div>
+        
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

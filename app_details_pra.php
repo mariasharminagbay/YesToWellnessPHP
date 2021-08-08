@@ -92,9 +92,8 @@ include_once('functions.php');
          
            
                
-      <div class="section section-custom">
-        <div class="container wide">
-          <div class="text-center">
+     
+          
           <div class="text-center">
           <form name="f1" action="app_req_pra.php" method="post">
           <table class="table" text-align="center" >
@@ -120,9 +119,8 @@ include_once('functions.php');
           </table>
                       </form>
         </div>
-          </div>
-        </div>
-      </div>
+         
+       
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

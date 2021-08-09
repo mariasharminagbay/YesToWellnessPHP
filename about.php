@@ -90,7 +90,7 @@ if (isset($_POST['submit']))
      <?php
 	  include('header.php')
 	?>
-<section class="section-lg bg-secondary" style="background-image:url(&quot;images/c.jpg&quot;); background-repeat: no-repeat; background-size: cover;">
+<section class="section-lg bg-secondary" style="background-image:url(&quot;images/about.jpg&quot;); background-repeat: no-repeat; background-size: cover;">
         <div class="container wide">
           <div class="text-center">
             <h1>About Us</h1>

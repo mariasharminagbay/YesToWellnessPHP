@@ -7,8 +7,6 @@ if (session_id() == "")
     $nameofCOunselor="";
     $locationCounselor="";
     $licenseType="";
-    $practionerProfileId="";
-    $specialty="";
 
     $error="";
     
@@ -17,63 +15,29 @@ if (session_id() == "")
     $customerType = $_SESSION['customerType'];
     $patientBackgroundId = $_SESSION['patientBackgroundId'];
     
+    $appointmentRequestID = $_SESSION['appointmentRequestID'] ;
+      
+      $result = mysqli_query($con, "SELECT a.appointmentRequestID as appointmentRequestID, a.insurancePolicyNumber AS insurancePolicyNumber,
+                    a.scheduleDate as scheduleDate, a.scheduleTime as scheduleTime, a.notes as notes, 
+                    b.city as city, b.licenseType as licenseType, c.firstName as firstName, c.lastName as lastName
+                    FROM tblappointmentrequests a
+                    INNER JOIN tblpractitionerProfile B on a.practionerProfileId = b.practionerProfileId
+                    INNER JOIN tblcustomers c on b.customerID = c.customerId 
+                    where a.appointmentRequestID = $appointmentRequestID ");
 
-    if (isset($_GET['select'])){
-      /* echo '<script>alert("at post select")</script>'; */
-      $practitionerID = $_GET['select'];
-
-      $_SESSION['practitionerfirstName'] =$practitionerID;
-      $result = mysqli_query($con, "SELECT PR.practionerProfileId as practionerProfileId , PR.customerID as customerID, cust.firstName as firstName, cust.lastName as lastName,
-                          PR.officeLocation as officeLocation , PR.city as city, PR.province as province, PR.licenseType as licenseType, 
-                          PR.licenseNumber as licenseNumber,PR.specialties as specialties , PR.preferredPatientGender as preferredPatientGender 
-                          FROM tblpractitionerprofile PR 
-                          INNER JOIN tblcustomers cust
-                          on PR.customerID = cust.customerId
-                          where practionerProfileId= '$practitionerID'");
       $numpresult = mysqli_num_rows ($result);
+
       if($numpresult > 0) {
         $row = $result->fetch_array();
         $nameofCOunselor= $row['firstName']." ".$row['lastName'];
         $locationCounselor=$row['city'];
         $licenseType=$row['licenseType'];
-        $practionerProfileId = $row['practionerProfileId'];
-        $specialty=$row['specialties'];
+        $notes = $row['notes'];
+        $scheduleDate = $row['scheduleDate'];
+        $scheduleTime = $row['scheduleTime'];
+        $insurancePolicyNumber = $row['insurancePolicyNumber'];
 
-      }
-      //header('location: patientBookingPage.php');
-      $_SESSION['practionerProfileId'] = $practionerProfileId;
-      $_SESSION['specialty'] = $specialty;
-    }
-
-    if (isset($_POST['submit'])){
-      /* echo '<script>alert("at post save")</script>'; */
-      $scheduleDate=$_POST['date'];
-      $scheduleTime=$_POST['time'];
-      $insurancePolicyNumber = $_POST['insuranceNumber'];
-      $notes=$_POST['notes'];
-
-      $practionerProfileId =$_SESSION['practionerProfileId'];
-      $specialty = $_SESSION['specialty'];
-      
-      $error=$scheduleDate. " " . $scheduleTime. "> prID: ". $practionerProfileId. ">>custID:".$customerID;
-
-      $insertQuery = "INSERT INTO `tblappointmentrequests`(`patientBackgroundId`, `scheduleDate`, `scheduleTime`, 
-          `practionerProfileId`, `paymentMethod`, `insuranceCompanyId`, `insurancePolicyNumber`, `notes`, 
-          `primaryConcern`, `virtualRoom`, `isPatientRequest`, `sessionStatusId`) 
-          VALUES ($patientBackgroundId, '$scheduleDate','$scheduleTime',$practionerProfileId,'VISA',1,
-          '$insurancePolicyNumber','$notes','$specialty','',1,1)";
-
-      if (mysqli_query($con,$insertQuery))
-            {
-                //$error = "CHAIR has been added";
-                echo '<script>alert("Item has been added")</script>';
-                header('location: patientAppointmentList.php');
-            }
-            else {
-                echo '<script>alert("Error occured whitle adding item.")</script>';
-            }
-    }
-    
+      }  
 
 ?>
 
@@ -168,17 +132,19 @@ if (session_id() == "")
       <div class='container' style='margin-left:50px;margin-right:50px;'>
         <div class='col-md-12' style='padding-left:100px;padding-right:100px;'> 
               <br>  <br>			 
-            <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Request for Appointment</h4>
+            <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Details of the Appointment</h4>
             <br>
-         <form id="patientBookingPage" action="patientBookingPage.php" method="POST" enctype="multipart/form-data">
+         <form id="viewDetailsOfAppointment" action="viewDetailsOfAppointment.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group row align-items-center">
                     <div class="form-group col-md-6">
-                        <label for="date">Select Date: </label>
-                        <input type="date" name="date" min="<?= date('Y-m-d'); ?>" class="form-control" required>
+                        <label for="date"> Date: </label>
+                        <input type="text" name="date" class="form-control" 
+                        value="<?php echo $scheduleDate; ?> " disabled>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="time">Select Time:</label>
-                        <input name="time" id="time" type="time"  class="form-control" required">
+                        <label for="time">Time:</label>
+                        <input name="time" id="time" type="text"  class="form-control" 
+                        value="<?php echo $scheduleTime; ?> " disabled>
                     </div>
                 </div>
                 <div class="form-group row align-items-center">
@@ -188,7 +154,8 @@ if (session_id() == "")
                     </div>
                     <div class="form-group col-md-6">
                         <label for="insuranceNumber">Insurance Policy Number: </label>
-                        <input name="insuranceNumber" id="insuranceNumber" type="text"  class="form-control" required>
+                        <input name="insuranceNumber" id="insuranceNumber" type="text"  class="form-control" 
+                        value="<?php echo $insurancePolicyNumber; ?> " placeholder=" " disabled>
                     </div>
                 </div>
                     <div class="form-row align-items-center">
@@ -205,92 +172,28 @@ if (session_id() == "")
                             <div class="form-group col-md-4">
                             <label for="licenseTypeCounselor">License Type of Counselor</label>
                             <input name="licenseTypeCounselor" id="licenseTypeCounselor" type="text" class="form-control"
-                              value="<?php echo $licenseType; ?> " placeholder=" " disabled>
+                              value="<?php echo $licenseType ; ?> " placeholder=" " disabled>
                             </div>
 				
                 <div class="form-group col-md-12">
-                    <label for="notes">Message:</label>
+                    <label for="notes">Notes:</label>
                     <fieldset>
-                        <textarea class="form-control" id="notes" name="notes" rows="6" placeholder="Tell us something about yourself..."></textarea>
+                        <textarea class="form-control" id="notes" name="notes" rows="6" 
+                        disabled><?php echo htmlspecialchars($notes, ENT_QUOTES, 'UTF-8') ?></textarea>
                     </fieldset>
                 </div>
+                <div>
+                    <a class="button button-primary button-md button-round-2" href="patientAppointmentList.php" data-caption-animate="fadeInUp" data-caption-delay="450">Back to Appointment List</a>       
+                </div>
              </div>
-                 <input type="submit" id="submit" name="submit" value="Set a Date" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >                
+                 
              </div>
+             
             </form>
       </div>
      </div>                
     </section>
-    <?php 
-          $query_searchproduct = mysqli_query($con, "SELECT PR.practionerProfileId as practionerProfileId , PR.customerID as customerID, cust.firstName as firstName, cust.lastName as lastName,
-          PR.officeLocation as officeLocation , PR.city as city, PR.province as province, PR.licenseType as licenseType, 
-          PR.licenseNumber as licenseNumber,PR.specialties as specialties , PR.preferredPatientGender as preferredPatientGender FROM tblpractitionerprofile PR 
-          INNER JOIN tblcustomers cust
-          on PR.customerID = cust.customerId
-          WHERE PR.specialties  = (SELECT PB.feelingToAddress from tblpatientbackground PB where PB.customerID = $customerID)");
-      ?>
-    <section class="fillform" style='background-color:#DEE6F3'>
-    <div class='container' style='margin-left:50px;margin-right:50px;'>
-      <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
-                <br>
-              <div class="section-heading">
-                  <h2>Choose from the List of Available Practitioner(s)</h2>
-              </div>
-              <form id="patientBookingPage" action="patientBookingPage.php" method="POST" >
-              <div class="default-table">
-                  <table>
-                  <thead>
-                      <tr>
-                      <th style="display:none;">Profile ID</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Location</th>
-                      <th>Specialization</th>
-                      <th colspan="2">  </th>
-                      </tr>
-                  </thead>
-                      <tbody>
-                        <!--//fetch_array()){ -->
-                      <?php while($row = $query_searchproduct->fetch_assoc()){ ?> 
-                     
-                       <tr>
-                         <td style="display:none;"> <?php echo $row['practionerProfileId']; ?> </td>
-                         <td> <?php echo $row['firstName']; ?> </td>
-                         <td> <?php echo $row['lastName']; ?> </td>
-                         <td> <?php echo $row['city']; ?> </td>
-                         <td> <?php echo $row['specialties']; ?> </td>
-                         <td>
-                           <a href="patientBookingPage.php?select=<?php echo $row['practionerProfileId']; ?>"
-                              class="btn btn-info"> Select </a>
-                      </tr>
-                    <?php } ?>
-                      
-                      </tbody>
-                  </table>
-              </div>
-             
-              </form>
-              <div>
-                <br>
-                <a class="button button-primary button-md button-round-2" href="patientAppointmentList.php" data-caption-animate="fadeInUp" data-caption-delay="450">View Appointment List</a>       
-              </div>
 
-            </div>
-          </div>
-      </div>   
-      <!-- <div class="col-md-6 col-sm-12">
-        <p><br></p>
-        <div class="col-md-4">
-          <div class="filled-rounded-button">
-            <a href="patientBookingPage.php">Select Counselor</a>
-          </div>
-        </div>
-      </div> -->
-      <div>
-   </div>                
-  </section>
       <!--Testimonials-->
        <footer class="section footer-classic context-dark">
         <div class="container wide">

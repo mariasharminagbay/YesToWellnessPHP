@@ -13,7 +13,7 @@ if (session_id() == "")
 
     //will update the appoint request list
     if (isset($_GET['decline'])){
-      echo '<script>alert("at post decline")</script>';
+      /* echo '<script>alert("at post decline")</script>'; */
       $appointmentRequestID = $_GET['decline'];
 
       $result = mysqli_query($con, "UPDATE tblappointmentrequests SET sessionStatusId = 4 
@@ -37,6 +37,14 @@ if (session_id() == "")
       $result = mysqli_query($con, "UPDATE tblappointmentrequests SET sessionStatusId = 3
                     WHERE appointmentRequestID = $appointmentRequestID");
  
+    }
+
+    if (isset($_GET['view'])){
+      echo '<script>alert("at post decline")</script>';
+      $appointmentRequestID = $_GET['view'];
+
+      $_SESSION['appointmentRequestID'] = $appointmentRequestID;
+      header('location: viewDetailsOfAppointment.php');
     }
 
 ?>
@@ -73,9 +81,57 @@ if (session_id() == "")
       </div>
     </div>
     <div class="page">
-    <?php
-	  include('header.php')
-	  ?>
+    <header class="section page-header">
+        <!--RD Navbar-->
+        <div class="rd-navbar-wrap">
+          <nav class="rd-navbar rd-navbar-classic" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-static" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-lg-stick-up-offset="46px" data-xl-stick-up-offset="46px" data-xxl-stick-up-offset="46px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-main-outer">
+              <div class="rd-navbar-main">
+                <!--RD Navbar Panel-->
+                <div class="rd-navbar-panel">
+                  <!--RD Navbar Toggle-->
+                  <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                  <!--RD Navbar Brand-->
+                  <div class="rd-navbar-brand">
+                    <!--Brand--><a class="brand" href="index.html"><img class="brand-logo-dark" src="images/YTWlogo.png" alt="" width="214" height="56"/><img class="brand-logo-light" src="images/logo-inverse-430x112.png" alt="" width="215" height="56"/></a>
+                  </div>
+                </div>
+                <div class="rd-navbar-main-element">
+                  <div class="rd-navbar-nav-wrap">
+                    <ul class="rd-navbar-nav">
+                      <li class="rd-nav-item active"><a class="rd-nav-link" href="index.php">Home</a>
+                      </li>
+                      
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="about.php">About</a>
+                      </li>
+
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="faq.php">FAQ</a>
+                      </li>
+                      
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.php">Contacts</a>
+                      </li>
+                      
+                      <?php 
+
+                        if (session_id() == "") { ?>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="login.php">Login</a>
+                          </li>
+                      <?php } ?> 
+                      <?php if (session_id() != "") { ?>
+                          <li class="rd-nav-item"><a class="rd-nav-link" href="logout.php">Logout</a>
+                          </li>
+                      <?php } ?> 
+                      <li class="rd-nav-item"><a class="rd-nav-link">Hello   <strong style="color:green;font-size:30px;"> <?php echo $_SESSION['user_name']; ?> </strong> </a>
+                   
+                    
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
       <!--Main bunner-->
       <?php 
           $query_pendingAppointment = mysqli_query($con, "SELECT a.appointmentRequestID as appointmentRequestID, a.practionerProfileId as practionerProfileId, a.patientBackgroundId as patientBackgroundId, 
@@ -116,8 +172,8 @@ if (session_id() == "")
                           <td> <?php echo $row['firstName']; ?> </td>
                           <td> <?php echo $row['lastName']; ?> </td>
                           <td>
-                            <a href="patientAppointmentList.php"
-                                class="btn btn-info"> View Details </a>
+                          <a href="patientAppointmentList.php?view=<?php echo $row['appointmentRequestID']; ?>"
+                              class="btn btn-info"> View Details </a>
                             <a href="patientAppointmentList.php?cancel=<?php echo $row['appointmentRequestID']; ?>"
                               class="btn btn-info"> Cancel Appointment </a>
                           </td> 

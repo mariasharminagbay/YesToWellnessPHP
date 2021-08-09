@@ -20,14 +20,8 @@ if (session_id() == "")
 
     if (isset($_GET['select'])){
       echo '<script>alert("at post select")</script>';
-      /* $_SESSION['practitionerID'] = $_POST["practitionerID"];
-      $_SESSION['practitionerfirstName'] = $_POST["firstName"];
-      $_SESSION['practitionerlastName'] = $_POST["practitionerlastName"];
-      $_SESSION['practitionercity'] = $_POST["practitionerID"];
-      $_SESSION['practitionerspecialties'] = $_POST["practitionerspecialties"]; */
-     
-      
       $practitionerID = $_GET['select'];
+
       $_SESSION['practitionerfirstName'] =$practitionerID;
       $result = mysqli_query($con, "SELECT PR.practionerProfileId as practionerProfileId , PR.customerID as customerID, cust.firstName as firstName, cust.lastName as lastName,
                           PR.officeLocation as officeLocation , PR.city as city, PR.province as province, PR.licenseType as licenseType, 
@@ -44,11 +38,6 @@ if (session_id() == "")
         $licenseType=$row['licenseType'];
         $practionerProfileId = $row['practionerProfileId'];
         $specialty=$row['specialties'];
-         /*  $_SESSION['practitionerfirstName'] = $_POST["firstName"];
-          $_SESSION['practitionerlastName'] = $_POST["practitionerlastName"];
-          $_SESSION['practitionercity'] = $_POST["practitionerID"];
-          $_SESSION['practitionerspecialties'] = $_POST["practitionerspecialties"]; */
-          
 
       }
       //header('location: patientBookingPage.php');
@@ -57,13 +46,11 @@ if (session_id() == "")
     }
 
     if (isset($_POST['submit'])){
-      echo '<script>alert("at post save")</script>';
+      /* echo '<script>alert("at post save")</script>'; */
       $scheduleDate=$_POST['date'];
       $scheduleTime=$_POST['time'];
       $insurancePolicyNumber = $_POST['insuranceNumber'];
       $notes=$_POST['notes'];
-
-      
 
       $practionerProfileId =$_SESSION['practionerProfileId'];
       $specialty = $_SESSION['specialty'];
@@ -72,9 +59,9 @@ if (session_id() == "")
 
       $insertQuery = "INSERT INTO `tblappointmentrequests`(`patientBackgroundId`, `scheduleDate`, `scheduleTime`, 
           `practionerProfileId`, `paymentMethod`, `insuranceCompanyId`, `insurancePolicyNumber`, `notes`, 
-          `primaryConcern`, `virtualRoom`, `isPatientRequest`, `isApproved`) 
+          `primaryConcern`, `virtualRoom`, `isPatientRequest`, `sessionStatusId`) 
           VALUES ($patientBackgroundId, '$scheduleDate','$scheduleTime',$practionerProfileId,'VISA',1,
-          '$insurancePolicyNumber','$notes','$specialty','',1,0)";
+          '$insurancePolicyNumber','$notes','$specialty','',1,1)";
 
       if (mysqli_query($con,$insertQuery))
             {
@@ -183,7 +170,7 @@ if (session_id() == "")
               <br>  <br>			 
             <h4 data-caption-animate="fadeInUp" data-caption-delay="100">Request for Appointment</h4>
             <br>
-         <form id="practitionerProfile2" action="practitionerProfile2.php" method="POST" enctype="multipart/form-data">
+         <form id="patientBookingPage" action="patientBookingPage.php" method="POST" enctype="multipart/form-data">
                 <div class="form-group row align-items-center">
                     <div class="form-group col-md-6">
                         <label for="date">Select Date: </label>
@@ -228,8 +215,8 @@ if (session_id() == "")
                     </fieldset>
                 </div>
              </div>
-                 <input type="submit" name="submit" value="Update Profile" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >                
-                </div>
+                 <input type="submit" id="submit" name="submit" value="Update Profile" style="background-color: #4CAF50; border: none; padding: 16px 32px; margin: 4px 2px;" >                
+             </div>
             </form>
       </div>
      </div>                
@@ -256,6 +243,7 @@ if (session_id() == "")
                   <table>
                   <thead>
                       <tr>
+                      <th style="display:none;">Profile ID</th>
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Location</th>
@@ -268,6 +256,7 @@ if (session_id() == "")
                       <?php while($row = $query_searchproduct->fetch_assoc()){ ?> 
                      
                        <tr>
+                         <td style="display:none;"> <?php echo $row['practionerProfileId']; ?> </td>
                          <td> <?php echo $row['firstName']; ?> </td>
                          <td> <?php echo $row['lastName']; ?> </td>
                          <td> <?php echo $row['city']; ?> </td>
@@ -282,7 +271,12 @@ if (session_id() == "")
                   </table>
               </div>
              
-              </form>          
+              </form>
+              <div>
+                <br>
+                <a class="button button-primary button-md button-round-2" href="patientAppointmentList.php" data-caption-animate="fadeInUp" data-caption-delay="450">View Appointment List</a>       
+              </div>
+
             </div>
           </div>
       </div>   

@@ -79,11 +79,12 @@ if (isset($_POST['submit']))
      <?php
 	  include('header.php')
 	?>
-      <section class="section-lg bg-secondary">
+      
+      <section class="section-lg bg-secondary" style="background-image:url(&quot;images/faq.jpg&quot;); background-repeat: no-repeat; background-size: cover;">
         <div class="container wide">
           <div class="text-center">
-            <h1>FAQ</h1>
-           
+            <h1>Frequently Asked Questions</h1>
+            
           </div>
         </div>
       </section>
@@ -91,7 +92,7 @@ if (isset($_POST['submit']))
         <div class="container wide">
           <div class="row row-md-80 row-sm-50">
             <div class="col-sm-12 col-lg-12">
-              <div class="subtitle">Frequently Asked Questions</div>
+              <div class="subtitle"></div>
             </div>
             <div class="col-sm-12  offset-lg-2 col-lg-10">
               <div class="card-group-custom" id="accordion1" role="tablist" aria-multiselectable="false">

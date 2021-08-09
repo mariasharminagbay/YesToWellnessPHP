@@ -4,18 +4,40 @@ if (session_id() == "")
     session_start(); 
 
     include("connect.php");
-
-    //include 'functions.php';
-    //
-    
+   
     $error="";
     
     $customerID = $_SESSION['customerID'];
     //echo $customerID;
     $customerType = $_SESSION['customerType'];
 
-    //will get all the list from 
-    
+    //will update the appoint request list
+    if (isset($_GET['decline'])){
+      echo '<script>alert("at post decline")</script>';
+      $appointmentRequestID = $_GET['decline'];
+
+      $result = mysqli_query($con, "UPDATE tblappointmentrequests SET sessionStatusId = 4 
+                    WHERE appointmentRequestID = $appointmentRequestID");
+
+    }
+
+    if (isset($_GET['approve'])){
+      /* echo '<script>alert("at post select")</script>'; */
+      $appointmentRequestID = $_GET['approve'];
+
+      $result = mysqli_query($con, "UPDATE tblappointmentrequests SET sessionStatusId = 2 
+                    WHERE appointmentRequestID = $appointmentRequestID");
+  
+    }
+
+    if (isset($_GET['cancel'])){
+      /* echo '<script>alert("at post select")</script>'; */
+      $appointmentRequestID = $_GET['cancel'];
+
+      $result = mysqli_query($con, "UPDATE tblappointmentrequests SET sessionStatusId = 3
+                    WHERE appointmentRequestID = $appointmentRequestID");
+ 
+    }
 
 ?>
 <!DOCTYPE html>
@@ -56,12 +78,12 @@ if (session_id() == "")
 	  ?>
       <!--Main bunner-->
       <?php 
-          $query_pendingAppointment = mysqli_query($con, "SELECT a.appointmentSessionId as appointmentSessionId, a.practionerProfileId as practionerProfileId, a.patientBackgroundId as patientBackgroundId, 
-            a.scheduleDateTime as scheduleDateTime,  c.firstName as firstName, c.lastName as lastName
-          FROM tblappointmentsessions a
-          INNER JOIN tblpatientbackground B on a.patientBackgroundId = b.patientBackgroundId
-          INNER JOIN tblcustomers c on b.customerID = c.customerId 
-          where b.customerID =  $customerID and a.sessionStatusId = 2");
+          $query_pendingAppointment = mysqli_query($con, "SELECT a.appointmentRequestID as appointmentRequestID, a.practionerProfileId as practionerProfileId, a.patientBackgroundId as patientBackgroundId, 
+          a.scheduleDate as scheduleDate, a.scheduleTime as scheduleTime, c.firstName as firstName, c.lastName as lastName
+        FROM tblappointmentrequests a
+        INNER JOIN tblpatientbackground B on a.patientBackgroundId = b.patientBackgroundId
+        INNER JOIN tblcustomers c on b.customerID = c.customerId 
+        where b.customerID = $customerID and a.sessionStatusId = 2");
       ?>
     <section class="fillform" style='background-color:#DEE6F3'>
       <div class="container">
@@ -76,24 +98,29 @@ if (session_id() == "")
                     <table>
                     <thead>
                         <tr>
-                        <th>Date and Time </th>
+                        <th style="display:none;">AppointRequesID</th>
+                        <th>Date </th>
+                        <th>Time </th>
                         <th>Counselor's Name</th>
                         <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+                      
                         <?php while($row = $query_pendingAppointment->fetch_assoc()){ ?> 
                         
                         <tr>
-                          <td> <?php echo $row['scheduleDateTime']; ?> </td>
+                          <td style="display:none;"><?php echo $row['appointmentRequestID']; ?></td>
+                          <td> <?php echo $row['scheduleDate']; ?> </td>
+                          <td> <?php echo $row['scheduleTime']; ?> </td>
                           <td> <?php echo $row['firstName']; ?> </td>
                           <td> <?php echo $row['lastName']; ?> </td>
                           <td>
                             <a href="patientAppointmentList.php"
                                 class="btn btn-info"> View Details </a>
-                            <a href="patientAppointmentList.php"
-                                class="btn btn-info"> Cancel Appointment </a> 
+                            <a href="patientAppointmentList.php?cancel=<?php echo $row['appointmentRequestID']; ?>"
+                              class="btn btn-info"> Cancel Appointment </a>
+                          </td> 
                         </tr>
                       <?php } ?>
                     </tbody>
@@ -107,18 +134,13 @@ if (session_id() == "")
     </section>
 
     <?php 
-          $query_pendingApproval = mysqli_query($con, "SELECT a.appointmentRequestID as appointmentRequestID, 
-            a.patientBackgroundId as patientBackgroundId, a.scheduleDate as scheduleDate, 
-            a.scheduleTime as scheduleTime, a.practionerProfileId as practionerProfileId, 
-            a.paymentMethod as paymentMethod, a.insuranceCompanyId as insuranceCompanyId, 
-            a.insurancePolicyNumber as insurancePolicyNumber, a.notes as notes, 
-            a.primaryConcern as primaryConcern, a.virtualRoom as virtualRoom, a.isPatientRequest as isPatientRequest
-            ,c.firstName as firstName, c.lastName as lastName
-          FROM tblappointmentrequests a
-          INNER JOIN tblpatientbackground B
-          INNER JOIN tblcustomers c on b.customerID = c.customerId
-          on a.patientBackgroundId = b.patientBackgroundId
-          where b.customerID = $customerID and isApproved = 0");
+          $query_pendingApproval = mysqli_query($con, "SELECT a.appointmentRequestID as appointmentRequestID, a.practionerProfileId as practionerProfileId, a.patientBackgroundId as patientBackgroundId, 
+          a.scheduleDate as scheduleDate, a.scheduleTime as scheduleTime, c.firstName as firstName, c.lastName as lastName
+        FROM tblappointmentrequests a
+        INNER JOIN tblpatientbackground B on a.patientBackgroundId = b.patientBackgroundId
+        INNER JOIN tblcustomers c on b.customerID = c.customerId 
+        where b.customerID =  $customerID and a.sessionStatusId = 1
+        and a.isPatientRequest =0");
       ?>
     <section class="fillform" style='background-color:#DEE6F3'>
         <div class="container">
@@ -129,10 +151,12 @@ if (session_id() == "")
                 <div class="section-heading">
                     <h2>List of Pending Requests</h2>
                 </div>
+                <form id="patientAppointmentList" action="patientAppointmentList.php" method="POST" >
                 <div class="default-table">
                     <table>
                     <thead>
                         <tr>
+                        <th style="display:none;">AppointRequesID</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Counselor's Name</th>
@@ -140,8 +164,6 @@ if (session_id() == "")
                         <th></th>
                         <th></th>
                         <th></th>
-                        
-
                         </tr>
                     </thead>
                     <tbody>
@@ -149,23 +171,24 @@ if (session_id() == "")
                         <?php while($row = $query_pendingApproval->fetch_assoc()){ ?> 
                         
                           <tr>
+                          <td style="display:none;"><?php echo $row['appointmentRequestID']; ?></td>
                           <td> <?php echo $row['scheduleDate']; ?> </td>
                           <td> <?php echo $row['scheduleTime']; ?> </td>
                           <td> <?php echo $row['firstName']; ?> </td>
                           <td> <?php echo $row['lastName']; ?> </td>
                           <td>
-                            <a href="patientAppointmentList.php"
-                                class="btn btn-info"> Approve </a> </td>
+                          <a href="patientAppointmentList.php?approve=<?php echo $row['appointmentRequestID']; ?>"
+                              class="btn btn-info"> Approve </a>
+                          </td>  
                           <td>
-                              <a href="patientAppointmentList.php"
-                                class="btn btn-info"> Decline </a> </td>
+                          <a href="patientAppointmentList.php?decline=<?php echo $row['appointmentRequestID']; ?>"
+                              class="btn btn-info"> Decline </a> </td>
                         </tr>
                       <?php } ?>
                     </tbody>
-                    </table>
-               
+                    </table> 
                 </div>
-                     
+              </form>      
               </div>
             </div>
         </div>   

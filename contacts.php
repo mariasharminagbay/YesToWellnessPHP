@@ -79,10 +79,11 @@ if (isset($_POST['submit']))
      <?php
 	  include('header.php')
 	?>
-   <section class="section-lg bg-secondary">
+  <!-- <div class="main-bunner-img bg-overlay-1" style="background-image: url(&quot;images/slide-01.jpg&quot;); background-size: cover;"></div> -->
+   <section class="section-lg bg-secondary" style="background-image:url(&quot;images/contactus.jpg&quot;);">
         <div class="container wide">
           <div class="text-center">
-            <h1>Contacts</h1>
+            <h1>Contact Us</h1>
             
           </div>
         </div>
@@ -90,7 +91,7 @@ if (isset($_POST['submit']))
       <!--Mailform-->
       <section class="section section-xl">
         <div class="container wide">
-		<div class="subtitle-2">Do you have a question,concern,idea,feedback,or problem? take a look at our frequently asked questions for somequick answers.if you still need assistance ,please fill out the form below and we'd be hapy to help!</div>
+		<div class="subtitle-2">Do you have a question, concern, idea, feedback, or problem? Take a look at our frequently asked questions for some quick answers. If you still need assistance, please fill out the form below and we will be hapy to help!</div>
           <div class="row row-50">
            
             <div class="col-lg-8">

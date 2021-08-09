@@ -90,51 +90,49 @@ if (isset($_POST['submit']))
      <?php
 	  include('header.php')
 	?>
-      <section class="section-lg bg-secondary">
+<section class="section-lg bg-secondary" style="background-image:url(&quot;images/c.jpg&quot;); background-repeat: no-repeat; background-size: cover;">
         <div class="container wide">
           <div class="text-center">
             <h1>About Us</h1>
-           
+            
           </div>
         </div>
-      </section>
+</section>
    <div class="section section section-lg">
         <div class="container wide">
-          
-         
-            <div class="row row-md-30">
+           <div class="row row-md-30">
              
-			  <div class="col-md-12 col-lg-12 subtitle-2 text-center">
-			  <h3 class="title green">Our Mission</h3>
-			  This year – 2021 – we are planning to launch a website which aims to provide services that will meet the demands of people, particularly the counselors, who wants to offer their services in a very efficient and convenient way; and the patients or people who needs help wherein they can reach out or contact the counselors at their own convenience; and provides accessibility to both patients and counselors.
+			      <div class="col-md-12 col-lg-12 subtitle-2 text-center">
+			          <h3 class="title green">Our Mission</h3>
+			          This year – 2021 – we are planning to launch a website which aims to provide services that will meet the demands of people, particularly the counselors, who wants to offer their services in a very efficient and convenient way; and the patients or people who needs help wherein they can reach out or contact the counselors at their own convenience; and provides accessibility to both patients and counselors.
             </div>
+          </div>
         </div>
-      </div>
     </div>
 	
 
-             
-			   <div class="row row-sm-30 container text-center">
+  <div class="section section-lg bg-gray-150">      
+			  <div class="row row-sm-30 container text-center">
 			      <div class="col-sm-12 col-md-12 col-lg-12">
-			  <h3 class="title green text-center">Our Success Stories</h3>
-			   </div>
-			   <div class="col-sm-12 col-md-4 col-lg-4">
-			   <img src='c.jpg' class='img img-responsive img-circular' >
-			   <p>Only half of Canadians experiencing a major depressive episode receive "potentially adequate care."</p>
-			   </div>
+			      <h3 class="title green text-center">Our Success Stories</h3>
+			      </div>
 			    <div class="col-sm-12 col-md-4 col-lg-4">
-				 <img src='c.jpg' class='img img-responsive img-circular' >
-				  <p>One-third of Canadians aged 15 or older who report having a need for mental health care say those needs were not fully met.</p>
-			  
-			   </div>
+			      <img src='images/c.jpg' class='img img-responsive img-circular' >
+			      <p>Only half of Canadians experiencing a major depressive episode receive "potentially adequate care."</p>
+			    </div>
 			    <div class="col-sm-12 col-md-4 col-lg-4">
-				 <img src='c.jpg' class='img img-responsive img-circular' >
-				  <p>75 per cent of children with mental disorders do not have access to specialized treatment services.</p>
+				    <img src='images/cc2.jpg' class='img img-responsive img-circular' >
+				    <p>One-third of Canadians aged 15 or older who report having a need for mental health care say those needs were not fully met.</p>
 			  
-			   </div>
+			    </div>
+			    <div class="col-sm-12 col-md-4 col-lg-4">
+				    <img src='images/cc3.jpg' class='img img-responsive img-circular' >
+				    <p>75 per cent of children with mental disorders do not have access to specialized treatment services.</p>
 			  
-			 </div>
-
+			    </div>
+			  
+	      </div>
+  </div>
 	<!--Testimonials-->
       <div class="section section-lg bg-gray-150">
         <div class="text-center">
@@ -179,18 +177,19 @@ if (isset($_POST['submit']))
 			  <br>
 			   </div>
 			   <div class="col-sm-12 col-md-4 col-lg-4">
-			   <img src='a1.jpg' class='img img-responsive' height='250px'>
+         <!-- <div class="main-bunner-img bg-overlay-1" style="background-image: url(&quot;images/slide-01.jpg&quot;); background-size: cover;"></div> -->
+			   <img src="images/a3.jpg" class="img img-responsive" height="250px">
 			   <b>Maria Sharmin Agbay</b>
 			   </div>
 			   
 			    <div class="col-sm-12 col-md-4 col-lg-4">
-				 <img src='a3.jpg'class='img img-responsive'height='250px'>
+				 <img src='images/a1.jpg'class='img img-responsive'height='250px'>
 				  <b>Foramben Patel</b>
-			  
+          
 			   </div>
 			  
 			   <div class="col-sm-12 col-md-4 col-lg-4">
-			   <img src='a2.jpg' class='img img-responsive' height='250px'>
+			   <img src='images/a2.jpg' class='img img-responsive' height='250px'>
 				  <b>Chinchu Chettayil Joseph</b>
 			  
 			   </div>

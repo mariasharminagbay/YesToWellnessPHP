@@ -28,7 +28,7 @@ include('functions.php');
 
    $result2=mysqli_query($con,$query2);  
 
-   
+  
 
 if ($con->query($query2) === TRUE) {
   echo '<script>alert("Record Updated Successfully!")</script>';
@@ -44,7 +44,7 @@ if ($con->query($query2) === TRUE) {
   // $rows=mysqli_fetch_assoc($result1);
   //  $id1 = $_SESSION['patientProfileId1'];
    
-  $query3= "UPDATE tblappointmentrequests SET sessionStatusId=3, notes='Appointment Cancelled.' WHERE appointmentRequestID=$id1";      
+  $query3= "UPDATE tblappointmentrequests SET sessionStatusId=5, notes='Appointment Declined.' WHERE appointmentRequestID=$id1";      
 
  $result3=mysqli_query($con,$query3);  
  
@@ -53,6 +53,8 @@ if ($con->query($query2) === TRUE) {
 } else {
   echo '<script>alert("Error Updating the  record!")</script>'. $con->error;
 }  
+
+
   
 }
   
@@ -127,31 +129,34 @@ if ($con->query($query2) === TRUE) {
             </div>
           </nav>
         </div>
-      </header>     
-               
+      </header>                   
+
+      <section class="fillform" style='background-color:#DEE6F3'>
+      <div class='container' style='margin-left:50px;margin-right:50px;'>
+        <div class='col-md-12' style='padding-left:100px;padding-right:100px;'> 
      
           <div class="text-center">
-          <form name="f1" action="" method="post">
+          <form name="f1" method="post">
             <table style="margin-left:auto; margin-right:auto;" >
-                <th colspan="1; border=3"><h4 style="color:Green;"> Appointment Request Details</h4></th>
+                <th colspan="2; border=3"><h4 style="color:Green; margin-left:auto; margin-right:auto;"> Appointment Request Details</h4></th></br></br>
 
                 
                     <?php 
                         while($rows=mysqli_fetch_assoc($result1))
                         { ?>
-                           <tr> <td><?php echo $rows['patientProfileId'];?></td></tr>
-                           <tr> <td><?php echo $rows['scheduleDate'];?></td></tr>
-                           <tr> <td><?php echo $rows['scheduleTime'];?></td></tr>
-                           <tr> <td><?php echo $rows['appointmentRequestID'];?></td></tr>
-                           <tr> <td><?php echo $rows['virtualRoom'];?></td></tr>
-                           <tr><td><?php echo $rows['notes'];?></td></tr>
+                           <tr> <th class="text-left" >Patient ProfileId:</th><td class="text-left"><?php echo $rows['patientProfileId'];?></td>
+                         <tr><th class="text-left">Schedule Date:</th><td class="text-left"><?php echo $rows['scheduleDate'];?></td></tr>
+                         <tr><th class="text-left">Schedule Time:</th><td class="text-left"><?php echo $rows['scheduleTime'];?></td></tr>
+                         <tr><th class="text-left">AppointmentRequestID:</th><td class="text-left"><?php echo $rows['appointmentRequestID'];?></td></tr>
+                         <tr><th class="text-left">VirtualRoom:</th><td class="text-left"><?php echo $rows['virtualRoom'];?></td></tr>
+                         <tr><th class="text-left">Notes:</th><td class="text-left"><?php echo $rows['notes'];?></td></tr>
                            </br></br>                
                             
                           <?php }                                                      
                      ?>
                      <tr><td>
-            <input type="submit" name="Approve" value= "Approve" style="margin-left:auto; margin-right:auto;"  >
-                       <input type="submit" name="Decline" value= "Decline" style="margin-left:auto; margin-right:auto;" ></td></tr>
+            <input type="submit" name="Approve" value= "Approve Appointment" class="btn btn-info pull-center"></td>
+                       <td><input type="submit" name="Decline" value= "Decline Appointment" class="btn btn-info pull-center"></td></tr>
                           </br></br></br>  
                         
             </table>
@@ -159,7 +164,9 @@ if ($con->query($query2) === TRUE) {
             
                         </form>
           </div>
-        
+                        </div>
+                        </div>
+                        </section>
       <footer class="section footer-classic context-dark">
         <div class="container wide">
           <div class="row row-sm-30">

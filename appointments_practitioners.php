@@ -92,15 +92,21 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
          
            
                
-      
+      <section class="fillform" style='background-color:#DEE6F3'>
+      <div class='container' style='margin-left:50px;margin-right:50px;'>
+        <div class='col-md-12' style='padding-left:100px;padding-right:100px;'> 
           <div class="text-center">
              <form name="f1" action="app_req_pra.php" method="post">
                  <table style="margin-left:auto; margin-right:auto;">
-                     <tr><td>
-                     <table class="table" text-align="center" style="float: left" >
+                     <tr>
+                     <table class="table" text-align="center" >
                 <tr>
-                    <td><th colspan="4; border=3"><h4 style="color:Green;"> Requested Appointments</h4></th></td>                    
+                    <td><th colspan="2; border=3"><h4 style="color:Green;" style="margin-left:auto; margin-right:auto;"> Requested Appointments</h4></th></td>                    
                       </tr>
+                      <th>Appointment RequestID</th>
+                            <th>Patient ProfileId</th>
+                            <th>Schedule Date</th>
+                            <th>Schedule Time</th>
                         <tr text-align="center">
                 
                     <?php 
@@ -116,12 +122,15 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
                        
                             <?php } ?>
                             </table>    
-                     </td>
-                     <td>
-                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td>
+                        </tr>
                         
-                     <td><table class="table" text-align="center" style="float: right" >
-                        <tr><td><th colspan="4"><h4 style="color:Green;"> Scheduled Appointments</h4></th></td></tr>
+                    <table class="table" text-align="center" >
+                        <tr><td><th colspan="2"><h4 style="color:Green;" style="margin-left:auto; margin-right:auto;"> Scheduled Appointments</h4></th></td></tr>
+
+                        <th>Appointment RequestID</th>
+                            <th>Patient ProfileId</th>
+                            <th>Schedule Date</th>
+                            <th>Schedule Time</th>
                         <?php
                             
                      while($rows=mysqli_fetch_assoc($result2))
@@ -138,7 +147,7 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
                         </tr>
 
             </tr>  
-            </table></td></tr>
+            </table></tr>
                       </table>
             
 
@@ -149,6 +158,10 @@ $query2= "SELECT * FROM tblappointmentrequests WHERE sessionStatusId=2";
         </form>
             
           </div>
+              </div>
+              </div>
+              
+              </section>
         
       <footer class="section footer-classic context-dark">
         <div class="container wide">

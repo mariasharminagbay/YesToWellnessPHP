@@ -75,7 +75,9 @@ include_once('functions.php');
       </header>     
            
                
-      
+      <section class="fillform" style='background-color:#DEE6F3'>
+      <div class='container' style='margin-left:50px;margin-right:50px;'>
+        <div class='col-md-12' style='padding-left:100px;padding-right:100px;'> 
           <div class="text-center">
             
             <div>
@@ -113,6 +115,8 @@ include_once('functions.php');
                     </div>
             
           </div>
+</div>
+</section>
        
       <footer class="section footer-classic context-dark">
         <div class="container wide">

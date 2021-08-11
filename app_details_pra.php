@@ -92,34 +92,43 @@ include_once('functions.php');
          
            
                
-     
+      <section class="fillform" style='background-color:#DEE6F3'>
+      <div class='container' style='margin-left:50px;margin-right:50px;'>
+        <div class='col-md-12' style='padding-left:100px;padding-right:100px;'> 
           
           <div class="text-center">
-          <form name="f1" action="app_req_pra.php" method="post">
-          <table class="table" text-align="center" >
-              <th colspan="2; border=3"><h4 style="color:Green;"> Scheduled Appointment Details</h4></th>
-
-              
+          <form name="f1" action="" method="post">
+          <table class="table" style="margin-left:auto; margin-right:auto;">
+              <th colspan="2; border=3" ><h4 style="color:Green; margin-left:auto; margin-right:auto;"> Scheduled Appointment Details</h4></th>
+                  
                   <?php 
                       while($rows=mysqli_fetch_assoc($result2))
                       { ?>
-                         <tr> <td><?php echo $rows['patientProfileId'];?></td></tr>
-                         <tr> <td><?php echo $rows['scheduleDate'];?></td></tr>
-                         <tr> <td><?php echo $rows['scheduleTime'];?></td></tr>
-                         <tr> <td><?php echo $rows['appointmentRequestID'];?></td></tr>
-                         <tr> <td><?php echo $rows['virtualRoom'];?></td></tr>
-                         <tr><td><?php echo $rows['notes'];?></td></tr>
-                         <tr> <td></td>
+                         <tr > <th class="text-left" >Patient ProfileId:</th><td class="text-left"><?php echo $rows['patientProfileId'];?></td>
+                         <tr><th class="text-left">Schedule Date:</th><td class="text-left"><?php echo $rows['scheduleDate'];?></td></tr>
+                         <tr><th class="text-left">Schedule Time:</th><td class="text-left"><?php echo $rows['scheduleTime'];?></td></tr>
+                         <tr><th class="text-left">AppointmentRequestID:</th><td class="text-left"><?php echo $rows['appointmentRequestID'];?></td></tr>
+                         <tr><th class="text-left">VirtualRoom:</th><td class="text-left"><?php echo $rows['virtualRoom'];?></td></tr>
+                         <tr><th class="text-left">Notes:</th><td class="text-left"><?php echo $rows['notes'];?></td></tr>
+                         
 
                         <?php } 
 
                                                    
                    ?>
+                     <tr><td>
+                     
+            <input type="submit" name="Complete" value= "Complete Appointment" class="btn btn-info pull-center"></td>
+                  
+                  <td><input type="submit" name="cancel" value= "Cancel Appointment" class="btn btn-info pull-center" ></td></tr>
+                          </br></br></br>  
                       
           </table>
                       </form>
         </div>
-         
+                      </div>
+                      </div>
+                      </section>
        
       <footer class="section footer-classic context-dark">
         <div class="container wide">
